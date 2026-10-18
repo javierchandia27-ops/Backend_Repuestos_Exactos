@@ -7,7 +7,7 @@ API REST en Dart con Dart Frog, conectada al PostgreSQL local de `RE-db` mediant
 Requisitos: Dart SDK compatible con `pubspec.yaml`, Dart Frog CLI y el contenedor PostgreSQL de `RE-db` levantado y migrado.
 
 ```powershell
-cd C:\Users\felip\source\repos\RE-api
+cd ./Backend_Repuestos_Exactos 
 dart pub get
 ```
 
