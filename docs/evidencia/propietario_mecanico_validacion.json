@@ -1,0 +1,142 @@
+{
+  "fecha": "2026-10-31",
+  "alcance": "Propiedad explícita del taller y perfiles públicos propietario/mecanico",
+  "base_principal": {
+    "migracion": "V012__propietario_y_mecanico.sql",
+    "aplicada": true,
+    "respaldo": "pre-propietario-20261031-1793480223258.dump",
+    "volumen_conservado": true,
+    "propietario_confirmado_por_consulta": true
+  },
+  "sql": {
+    "metodo": "Restauración de esquema previo a V012 en base temporal, aplicación V012, semillas completas y archivos SQL 01 a 12. Permiso TEMPORARY de la base temporal ajustado al de la base principal; no forma parte del respaldo de esquema.",
+    "comprobaciones": 517,
+    "fallos": 0,
+    "archivos": [
+      {
+        "file": "/db/tests/01_esquema.sql",
+        "pass": 31,
+        "fail": [],
+        "errors": 0,
+        "expected": 0
+      },
+      {
+        "file": "/db/tests/02_restricciones.sql",
+        "pass": 63,
+        "fail": [],
+        "errors": 54,
+        "expected": 54
+      },
+      {
+        "file": "/db/tests/03_estados_y_cotizaciones.sql",
+        "pass": 42,
+        "fail": [],
+        "errors": 25,
+        "expected": 25
+      },
+      {
+        "file": "/db/tests/04_rbac.sql",
+        "pass": 138,
+        "fail": [],
+        "errors": 72,
+        "expected": 72
+      },
+      {
+        "file": "/db/tests/05_aislamiento_rls.sql",
+        "pass": 75,
+        "fail": [],
+        "errors": 22,
+        "expected": 22
+      },
+      {
+        "file": "/db/tests/06_autenticacion.sql",
+        "pass": 33,
+        "fail": [],
+        "errors": 6,
+        "expected": 6
+      },
+      {
+        "file": "/db/tests/07_auditoria.sql",
+        "pass": 26,
+        "fail": [],
+        "errors": 5,
+        "expected": 5
+      },
+      {
+        "file": "/db/tests/08_privacidad.sql",
+        "pass": 24,
+        "fail": [],
+        "errors": 4,
+        "expected": 4
+      },
+      {
+        "file": "/db/tests/09_consultas.sql",
+        "pass": 45,
+        "fail": [],
+        "errors": 0,
+        "expected": 0
+      },
+      {
+        "file": "/db/tests/10_operacion.sql",
+        "pass": 17,
+        "fail": [],
+        "errors": 6,
+        "expected": 6
+      },
+      {
+        "file": "/db/tests/11_google_onboarding.sql",
+        "pass": 1,
+        "fail": [],
+        "errors": 0,
+        "expected": 0
+      },
+      {
+        "file": "/db/tests/12_propietario_y_mecanico.sql",
+        "pass": 22,
+        "fail": [],
+        "errors": 10,
+        "expected": 10
+      }
+    ],
+    "limpieza_base_temporal": "eliminada tras validación",
+    "guiones_shell_concurrencia_operacion": "no ejecutados en esta validación"
+  },
+  "backend": {
+    "tests": 53,
+    "fallos": 0,
+    "integracion_postgresql": true,
+    "integracion_http": "http://localhost:8082",
+    "analyze_diagnosticos": 0
+  },
+  "frontend": {
+    "tests": 42,
+    "omitidos": 2,
+    "analyze_diagnosticos": 0,
+    "ui_real": {
+      "login_password_status": 200,
+      "perfil": "propietario",
+      "pantallas": [
+        "1280x1000",
+        "390x844"
+      ],
+      "errores_javascript": 0,
+      "google_config_interceptada_en_prueba": true
+    }
+  },
+  "servicios": {
+    "api_prueba": "http://localhost:8082",
+    "web_prueba": "http://localhost:8083",
+    "postgresql": "127.0.0.1:5433",
+    "originales_8080_8081": "procesos anteriores; Windows denegó terminarlos. El usuario indicó que los cerrará al terminar."
+  },
+  "limites": [
+    "No se efectuó una nueva selección interactiva de cuenta Google; reglas de alta y aceptación probadas con claims sintéticos y rollback.",
+    "Google requiere origen autorizado; la configuración de Google Cloud y el Client ID del usuario se conservaron.",
+    "No se implementó creación real de diagnósticos ni CRUD completo de cotizaciones, ni transferencia de propiedad o administrador delegado."
+  ],
+  "git_diff_check": {
+    "backend": 0,
+    "frontend": 0,
+    "database": 0
+  }
+}

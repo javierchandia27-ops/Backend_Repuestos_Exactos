@@ -152,7 +152,7 @@ void main() {
         expect((await send('POST', '/sessions', token: first)).status, 405);
         for (final email in [
           'mecanico1@losaromos.example',
-          'auditor@losaromos.example',
+          'mecanico2@losaromos.example',
         ]) {
           final role = await login(email);
           final rows = await collect(role);

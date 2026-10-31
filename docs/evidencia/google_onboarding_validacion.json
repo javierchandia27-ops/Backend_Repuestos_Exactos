@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-31",
+  "scope": "Google y onboarding de Flutter web; permisos PostgreSQL; servicios locales",
+  "backend": {
+    "passed": 52,
+    "skipped": 0,
+    "command": "dart test",
+    "databaseAndHttpIntegration": true
+  },
+  "frontend": {
+    "passed": 40,
+    "skipped": 2,
+    "command": "flutter test",
+    "skippedReason": "Integraciones Flutter opcionales requieren banderas de compilación; API y PostgreSQL verificados desde backend."
+  },
+  "sql": {
+    "passed": 595,
+    "files": 11,
+    "errorsExpected": 194,
+    "unexpectedErrors": 0,
+    "description": "Todos los archivos SQL; 01_esquema repetido después de corregir nombres de políticas. Las pruebas revierten sus datos."
+  },
+  "migration": {
+    "backup": "RE-db/backups/pre-google-20261031.dump",
+    "applied": "V011__google_y_onboarding.sql",
+    "validatedAgainstRestoredPreMigrationBackup": true,
+    "temporaryDatabaseRemoved": true,
+    "existingVolumePreserved": true
+  },
+  "analysis": {
+    "backend": "sin diagnósticos",
+    "frontend": "sin diagnósticos"
+  },
+  "google": {
+    "realClientIdConfigured": false,
+    "realGoogleLoginTested": false,
+    "signatureAndClaimTests": "Claves RSA generadas únicamente en pruebas; Google real no sustituido ni simulado en producción."
+  },
+  "limitations": [
+    "Google pendiente de Client ID web real y prueba con una cuenta Google.",
+    "Invitaciones con enlace compartido manualmente; sin envío automático de correo.",
+    "Un taller y un rol por usuario; integración Google de esta entrega sólo web.",
+    "Sesiones y desafíos en memoria, una instancia de API."
+  ],
+  "browser": {
+    "passwordLoginHttpStatus": 200,
+    "teamVisible": true,
+    "javascriptErrors": [],
+    "screenshots": [
+      "main_app/__temp/google-login-desktop.png",
+      "main_app/__temp/google-team-desktop.png",
+      "main_app/__temp/google-team-mobile.png"
+    ]
+  },
+  "services": {
+    "frontend": {
+      "status": 200
+    },
+    "database": {
+      "status": 200,
+      "body": {
+        "status": "ok",
+        "database": "connected"
+      }
+    },
+    "google": {
+      "status": 200,
+      "body": {
+        "enabled": false,
+        "client_id": null
+      }
+    }
+  }
+}

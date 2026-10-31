@@ -2,12 +2,12 @@
 
 ## Alcance
 
-Login, sesión, cierre de sesión y configuración del taller autenticado. Se reutilizan las tablas y la función de RE-db. No se crean ni alteran tablas. El login actualiza intentos, bloqueo y último ingreso, y genera la auditoría prevista en la base.
+Login, sesión, cierre de sesión y configuración del taller autenticado. Se utilizan las tablas y funciones versionadas en RE-db, incluidas V011 y V012. El login actualiza intentos, bloqueo y último ingreso, y genera la auditoría prevista en la base.
 
 ## Iniciar la API
 
 ```powershell
-cd C:\Users\felip\source\repos\RE-api
+cd C:\__apps\re-app\Backend_Repuestos_Exactos
 dart pub get
 dart pub global run dart_frog_cli:dart_frog dev --port 8081
 ```
@@ -37,7 +37,7 @@ Invoke-RestMethod -Method Post `
   -Uri "http://localhost:8081/auth/logout" -Headers $cabeceras
 ```
 
-Usuarios ficticios disponibles en RE-db/db/seeds/02_talleres_y_usuarios.sql. Ejemplos: admin@losaromos.example y admin@nuble.example pertenecen a talleres diferentes. También hay roles mecanico y auditor.
+Usuarios ficticios disponibles en RE-db/db/seeds/02_talleres_y_usuarios.sql. Ejemplos: admin@losaromos.example y admin@nuble.example pertenecen a talleres diferentes. Los perfiles públicos habilitados son propietario y mecanico; los auditores históricos no pueden ingresar.
 
 ## Contrato HTTP
 
@@ -57,6 +57,7 @@ Errores:
 - 400: JSON o campos inválidos; no se aceptan rol ni taller en el cuerpo del login.
 - 401 invalid_credentials: mismo error para contraseña incorrecta, correo inexistente, usuario/taller inactivo o cuenta bloqueada.
 - 401 invalid_session: token ausente, desconocido, vencido o revocado; también si cambió el rol o se desactivó el usuario/taller.
+- 403 profile_not_enabled: credenciales válidas de un perfil histórico no habilitado para la aplicación.
 - 405: método incorrecto, con cabecera Allow.
 - 413: cuerpo demasiado grande.
 - 415: se requiere application/json.
@@ -64,9 +65,9 @@ Errores:
 
 ## Contexto del taller
 
-La identidad viene de fn_autenticar_usuario. Cada petición protegida toma el rol de una enumeración cerrada, ejecuta SET LOCAL ROLE y establece app.taller_id, app.usuario_id, app.ip_origen y app.request_id dentro de una transacción. Los ids y el rol enviados por el cliente no se utilizan.
+La identidad de contraseña viene de fn_autenticar_aplicacion, que valida credenciales y resuelve el perfil mediante fn_perfil_usuario. Cada petición protegida toma el rol de una enumeración cerrada, ejecuta SET LOCAL ROLE y establece app.taller_id, app.usuario_id, app.ip_origen y app.request_id dentro de una transacción. Los ids y el rol enviados por el cliente no se utilizan.
 
-Se revalidan usuario y taller activos, ids públicos y rol antes de ejecutar la ruta. El nombre de la sesión corresponde al login. La IP procede del socket directo; no se confía en X-Forwarded-For. Si se incorpora un proxy, habrá que configurar explícitamente su tratamiento.
+Se revalidan usuario y taller activos, ids públicos, rol técnico y perfil de negocio antes de ejecutar la ruta. El nombre de la sesión corresponde al login. La IP procede del socket directo; no se confía en X-Forwarded-For. Si se incorpora un proxy, habrá que configurar explícitamente su tratamiento.
 
 Las rutas protegidas reciben AuthSession y TxSession en RequestContext. Sus consultas deben completarse dentro del handler, sin callbacks posteriores ni streams diferidos. Errores HTTP o excepciones provocan rollback. El login es distinto: el resultado de credenciales incorrectas se confirma para conservar intentos y auditoría.
 
@@ -76,7 +77,7 @@ Las rutas protegidas reciben AuthSession y TxSession en RequestContext. Sus cons
 
 Tokens aleatorios de 256 bits, guardados como hashes SHA-256. Duración absoluta de una hora, sin renovación automática. Máximo de 10.000 sesiones activas; las vencidas se purgan al emitir nuevas. Logout revoca inmediatamente.
 
-La memoria pertenece a una instancia y se pierde al reiniciar. Para varias instancias o persistencia se debe reemplazar el almacén por uno compartido. Flutter todavía no está conectado a estas rutas.
+La memoria pertenece a una instancia y se pierde al reiniciar. Para varias instancias o persistencia se debe reemplazar el almacén por uno compartido. Flutter consume estas rutas.
 
 ## Pruebas
 
@@ -89,7 +90,7 @@ Integración contra PostgreSQL y una API de prueba ya levantada:
 
 ```powershell
 $env:RUN_DATABASE_TESTS = "true"
-$env:RE_DB_ENV_FILE = "C:\Users\felip\source\repos\RE-db\.env"
+$env:RE_DB_ENV_FILE = "C:\__apps\re-app\RE-db\.env"
 $env:TEST_API_URL = "http://localhost:8081"
 try { dart test } finally {
   Remove-Item Env:RUN_DATABASE_TESTS
@@ -98,4 +99,6 @@ try { dart test } finally {
 }
 ```
 
-Sin estas variables se omiten las pruebas de integración correspondientes. Las pruebas usan las semillas y generan auditoría normal de login. Verifican tres roles, aislamiento entre talleres, reutilización de una sola conexión, limpieza del contexto tras commit/rollback, rechazo de identidades inconsistentes, vencimiento, revocación y HTTP. No ejecutan migraciones ni modifican datos de negocio.
+Sin estas variables se omiten las pruebas de integración correspondientes. Las pruebas usan las semillas y generan auditoría normal de login. Verifican los dos perfiles habilitados, el rechazo de perfiles históricos, aislamiento entre talleres, reutilización de una sola conexión, limpieza del contexto tras commit/rollback, rechazo de identidades inconsistentes, vencimiento, revocación y HTTP. No ejecutan migraciones ni modifican datos de negocio.
+
+Detalle de propiedad, invitaciones y controles SQL: [propietario y mecánico](propietario_y_mecanico.md).
