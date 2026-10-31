@@ -34,7 +34,15 @@ Middleware authenticationMiddleware({
       );
       final enriched = context.provide<RequestMetadata>(() => metadata);
       final path = context.request.uri.path;
-      const publicPaths = {'/', '/health/database', '/auth/login'};
+      const publicPaths = {
+        '/',
+        '/health/database',
+        '/auth/login',
+        '/auth/google',
+        '/auth/google/challenge',
+        '/auth/google/config',
+        '/auth/google/complete',
+      };
       Response response;
       if (publicPaths.contains(path)) {
         response = await handler(enriched);
@@ -69,6 +77,15 @@ Middleware authenticationMiddleware({
       return apiError(error.statusCode, error.code);
     } on SessionLimitException catch (_) {
       return apiError(503, 'session_capacity_reached');
+    } on ServerException catch (error) {
+      final rejection = switch (error.code) {
+        'RE022' => const ApiError(403, 'owner_required'),
+        'RE023' => const ApiError(400, 'mechanic_invitation_required'),
+        'RE024' => const ApiError(409, 'owner_protected'),
+        '42501' => const ApiError(403, 'forbidden'),
+        _ => const ApiError(503, 'database_unavailable'),
+      };
+      return apiError(rejection.statusCode, rejection.code);
     } on PgException catch (_) {
       return apiError(503, 'database_unavailable');
     } on SocketException catch (_) {

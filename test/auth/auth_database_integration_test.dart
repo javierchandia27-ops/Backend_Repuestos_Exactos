@@ -48,7 +48,7 @@ void main() {
 
       for (final email in [
         'mecanico1@losaromos.example',
-        'auditor@losaromos.example',
+        'mecanico2@losaromos.example',
       ]) {
         final identity = (await database.authenticate(
           email,

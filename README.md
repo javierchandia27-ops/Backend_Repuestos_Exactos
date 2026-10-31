@@ -85,7 +85,7 @@ La prueba real verifica metadatos, el rechazo de lectura operativa sin asumir ro
 | /auth/logout | POST | Token Bearer |
 | /settings | GET | Token Bearer; solo su taller |
 
-El token es opaco, dura una hora y su identidad se guarda en el servidor. Se revalidan usuario, taller activo y rol en cada petición protegida. Reiniciar la API cierra todas las sesiones. Las rutas nuevas quedan protegidas por defecto; solo son públicas /, /health/database y /auth/login.
+El token es opaco, dura una hora y su identidad se guarda en el servidor. Se revalidan usuario, taller activo, rol técnico y perfil de negocio en cada petición protegida. Reiniciar la API cierra todas las sesiones. Las rutas nuevas quedan protegidas por defecto; son públicas /, /health/database, /auth/login y los endpoints explícitos /auth/google, /auth/google/config, /auth/google/challenge y /auth/google/complete. Estos últimos validan la credencial o el ticket temporal antes de conceder acceso.
 
 Guía y ejemplos: [docs/autenticacion.md](docs/autenticacion.md).
 
@@ -94,7 +94,7 @@ Guía y ejemplos: [docs/autenticacion.md](docs/autenticacion.md).
 - `GET /sessions`: historial del taller autenticado, con filtros por estado y paginación por cursor.
 - Flutter consume autenticación, configuración, historial y búsqueda de catálogo con compatibilidad.
 - `GET /catalog/brands`, `/catalog/brands/{marca}/models`, `/catalog/dtc` y `/catalog/dtc/{codigo}/parts`.
-- `GET /search?vin=...`: vehículo registrado y visible del taller, para administración y mecánica.
+- `GET /search?vin=...`: vehículo registrado y visible del taller, para propietario y mecánico.
 - Contrato y alcance de búsqueda: [docs/busqueda.md](docs/busqueda.md).
 - La creación real de diagnósticos sigue pendiente.
 - Estructura y límites: [docs/arquitectura.md](docs/arquitectura.md).
@@ -105,3 +105,9 @@ Las migraciones y el contrato SQL siguen perteneciendo a RE-db.
 ## Acceso desde Flutter web
 
 La API permite por defecto los orígenes http://localhost:8080 y http://127.0.0.1:8080. CORS_ALLOWED_ORIGINS puede definir una lista de orígenes exactos separados por comas; no se admiten comodines. Reiniciar la API después de cambiarla. Los preflight OPTIONS se resuelven antes de la autenticación; el login y las rutas protegidas mantienen sus requisitos habituales.
+
+## Google y equipo del taller
+
+Configuración y recorridos de Google, registro de talleres e invitaciones: [guía](docs/google_y_equipo.md).
+
+Perfiles de negocio y migración V012: [propietario y mecánico](docs/propietario_y_mecanico.md). La propiedad se guarda explícitamente en PostgreSQL; las invitaciones incorporan sólo mecánicos.

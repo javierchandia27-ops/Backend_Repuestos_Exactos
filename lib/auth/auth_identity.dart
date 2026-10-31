@@ -1,19 +1,21 @@
-/// Roles permitidos por el contrato de RE-db.
+/// Perfiles de negocio resueltos por PostgreSQL.
 enum UserRole {
-  /// Administración del taller.
-  admin,
+  /// Propietario explícito del taller, validado en PostgreSQL.
+  propietario,
 
-  /// Operación mecánica.
-  mecanico,
+  /// Trabajo diario de diagnóstico y cotización.
+  mecanico;
 
-  /// Consulta y auditoría.
-  auditor;
+  /// Grupo técnico de PostgreSQL; no se recibe del cliente.
+  String get databaseRole => switch (this) {
+    propietario => 'admin',
+    mecanico => 'mecanico',
+  };
 
-  /// Sentencia fija: nunca se interpola un rol enviado por el cliente.
+  /// Sentencia fija para el grupo SQL que corresponde al perfil.
   String get setLocalRole => switch (this) {
-    admin => 'SET LOCAL ROLE taller_admin',
+    propietario => 'SET LOCAL ROLE taller_admin',
     mecanico => 'SET LOCAL ROLE taller_mecanico',
-    auditor => 'SET LOCAL ROLE taller_auditor',
   };
 }
 

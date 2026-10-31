@@ -1,6 +1,7 @@
 import 'package:postgres/postgres.dart';
 import 'package:re_api/auth/auth_identity.dart';
 import 'package:re_api/config/database_config.dart';
+import 'package:re_api/http/api_error.dart';
 import 'package:re_api/http/request_metadata.dart';
 
 /// Conexiones compartidas de la API con PostgreSQL.
@@ -53,26 +54,38 @@ class Database {
     String email,
     String password, {
     required RequestMetadata metadata,
+  }) async {
+    final row = await withAuthenticationTransaction(
+      metadata: metadata,
+      action: (transaction) async {
+        final result = await transaction.execute(
+          Sql.named('SELECT public.fn_autenticar_aplicacion(@email,@password)'),
+          parameters: {'email': email, 'password': password},
+        );
+        return Map<String, dynamic>.from(result.single[0]! as Map);
+      },
+    );
+    if (row['status'] == 'invalid_credentials') return null;
+    if (row['status'] != 'authenticated') {
+      throw const ApiError(403, 'profile_not_enabled');
+    }
+    return AuthIdentity(
+      userId: row['usuario_id'] as int,
+      workshopId: row['taller_id'] as int,
+      userPublicId: row['usuario_id_publico'] as String,
+      workshopPublicId: row['taller_id_publico'] as String,
+      role: UserRole.values.byName(row['perfil'] as String),
+      name: row['nombre'] as String,
+    );
+  }
+
+  /// Entrada sin taller: sólo para operaciones de autenticación con SQL fijo.
+  Future<T> withAuthenticationTransaction<T>({
+    required RequestMetadata metadata,
+    required Future<T> Function(TxSession) action,
   }) => _pool.runTx((transaction) async {
     await _setMetadata(transaction, metadata);
-    final result = await transaction.execute(
-      Sql.named('''
-        SELECT a.autenticado, a.usuario_id, a.usuario_id_publico,
-               a.taller_id, a.taller_id_publico, a.rol::text AS rol, a.nombre
-        FROM public.fn_autenticar_usuario(@email, @password) a
-      '''),
-      parameters: {'email': email, 'password': password},
-    );
-    final row = result.single.toColumnMap();
-    if (row['autenticado'] != true) return null;
-    return AuthIdentity(
-      userId: row['usuario_id']! as int,
-      workshopId: row['taller_id']! as int,
-      userPublicId: row['usuario_id_publico']! as String,
-      workshopPublicId: row['taller_id_publico']! as String,
-      role: UserRole.values.byName(row['rol']! as String),
-      name: row['nombre']! as String,
-    );
+    return action(transaction);
   });
 
   /// Una petición autenticada usa una conexión y una transacción completas.
@@ -103,14 +116,16 @@ class Database {
         WHERE u.id = @usuario AND u.taller_id = @taller
           AND u.id_publico = @usuario_publico::uuid
           AND t.id_publico = @taller_publico::uuid
-          AND u.activo AND t.activo AND u.rol::text = @rol
+          AND u.activo AND t.activo AND u.rol::text = @rol_tecnico
+          AND public.fn_perfil_usuario(u.id,u.taller_id)=@perfil
       '''),
       parameters: {
         'usuario': identity.userId,
         'taller': identity.workshopId,
         'usuario_publico': identity.userPublicId,
         'taller_publico': identity.workshopPublicId,
-        'rol': identity.role.name,
+        'rol_tecnico': identity.role.databaseRole,
+        'perfil': identity.role.name,
       },
     );
     if (active.isEmpty) throw const InvalidSession();

@@ -65,10 +65,10 @@ void main() {
         final first = await login('admin@losaromos.example');
         final second = await login('admin@nuble.example');
         final mechanic = await login('mecanico1@losaromos.example');
-        final auditor = await login('auditor@losaromos.example');
+        final coworker = await login('mecanico2@losaromos.example');
         final brands = (await get('/catalog/brands', first))['data'] as List;
         expect(brands, isNotEmpty);
-        for (final token in [second, mechanic, auditor]) {
+        for (final token in [second, mechanic, coworker]) {
           expect((await get('/catalog/brands', token))['data'], brands);
         }
         final toyota = brands.cast<Map<String, dynamic>>().firstWhere(
@@ -156,7 +156,7 @@ void main() {
           expect(row.containsKey('precio_referencia'), isFalse);
           expect(row.containsKey('id'), isFalse);
         }
-        for (final token in [mechanic, auditor]) {
+        for (final token in [mechanic, coworker]) {
           expect(
             (await get('/catalog/dtc/P0300/parts?limit=100', token))['data'],
             all,
@@ -201,8 +201,8 @@ void main() {
         );
         expect((await get('/search?vin=$vin', second))['data'], isNull);
         expect(
-          (await send('GET', '/search?vin=$vin', token: auditor)).status,
-          403,
+          (await send('GET', '/search?vin=$vin', token: coworker)).status,
+          200,
         );
         final restricted = <String>[];
         for (final vehicle in ownVehicles) {
