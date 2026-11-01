@@ -1,0 +1,1142 @@
+{
+  "schemaVersion": 2,
+  "reviewDate": "2026-11-01",
+  "timezone": "America/Santiago",
+  "workspace": "C:/__apps/re-app",
+  "subject": "Captura vLinker MC Bluetooth clásico: Windows/Chrome → API → PostgreSQL → historial → alternativas",
+  "status": "implemented_software_validated_physical_acceptance_pending",
+  "branch": "feat/bluetooth_obd2",
+  "repositories": {
+    "Repuestos-Exactos": {
+      "branch": "feat/bluetooth_obd2",
+      "head": "eafed776754c349107b49d79bb1638ea1226b6f2",
+      "headIsBaseForUncommittedIncrement": true
+    },
+    "Backend_Repuestos_Exactos": {
+      "branch": "feat/bluetooth_obd2",
+      "head": "9849be3919d3bbcfbbab5a66ae5f91db7098e23f",
+      "headIsBaseForUncommittedIncrement": true
+    },
+    "RE-db": {
+      "branch": "feat/bluetooth_obd2",
+      "head": "bace6c4d0eb8fa4fc98d3c6700caa7c1bb4cff13",
+      "headIsBaseForUncommittedIncrement": true
+    }
+  },
+  "method": {
+    "source": "Código de trabajo y ejecución de pruebas; el grafo anterior apuntaba a rutas previas y se contrastó con archivos actuales.",
+    "hardware": "Adaptador identificado por fotografía como vLinker MC Bluetooth 3.0; no disponible para pruebas físicas.",
+    "database": "V015 aplicada con respaldo a base local; suites y recorrido de escritura ejecutados en copia desechable.",
+    "externalProvider": "Proveedor controlado en la prueba E2E; no se atribuye validación nueva a Mercado Libre real."
+  },
+  "nodes": [
+    {
+      "id": "screen",
+      "file": "Repuestos-Exactos/lib/features/diagnostic/presentation/views/diagnostic_screen.dart",
+      "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/diagnostic/presentation/views/diagnostic_screen.dart",
+      "line": 19,
+      "label": "Pantalla: vehículo, adaptador, lectura y guardado",
+      "type": "frontend",
+      "status": "implemented_source_software_validated",
+      "sha256": "99c0ee0053393f981e659e9a43c1cd062230fd83ab8214046eadf25a1df4911d"
+    },
+    {
+      "id": "controller",
+      "file": "Repuestos-Exactos/lib/features/diagnostic/presentation/controllers/diagnostic_controller.dart",
+      "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/diagnostic/presentation/controllers/diagnostic_controller.dart",
+      "line": 14,
+      "label": "Estado, cancelación y reintento de guardado",
+      "type": "frontend",
+      "status": "implemented_source_software_validated",
+      "sha256": "3c9d0c5c5b78500534b053b5e3ec627f290d079c2013da11dac1fcc749c9a7e0"
+    },
+    {
+      "id": "serial",
+      "file": "Repuestos-Exactos/lib/features/diagnostic/data/transports/web_serial_transport.dart",
+      "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/diagnostic/data/transports/web_serial_transport.dart",
+      "line": 55,
+      "label": "Puerto SPP real mediante Web Serial",
+      "type": "transport",
+      "status": "implemented_source_software_validated",
+      "sha256": "84899f945cdde971bc5f1e1e39e87e095a96601d10f7ba582bee445e99f4e34e"
+    },
+    {
+      "id": "elm",
+      "file": "Repuestos-Exactos/lib/features/diagnostic/data/protocol/elm327_client.dart",
+      "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/diagnostic/data/protocol/elm327_client.dart",
+      "line": 7,
+      "label": "Comandos de lectura serializados y delimitados por prompt",
+      "type": "protocol",
+      "status": "implemented_source_software_validated",
+      "sha256": "60221b2aff56618498d1013910e80bb159f376e889ee14d57ef67ae9639bd5ef"
+    },
+    {
+      "id": "scanner",
+      "file": "Repuestos-Exactos/lib/features/diagnostic/data/repositories/obd_diagnostic_scanner.dart",
+      "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/diagnostic/data/repositories/obd_diagnostic_scanner.dart",
+      "line": 13,
+      "label": "Lectura 03/07/0A y control de integridad",
+      "type": "protocol",
+      "status": "implemented_source_software_validated",
+      "sha256": "21b80c0f292056eb6b70a6930b2c1954fa04e2a0f439f8a821918d4650292863"
+    },
+    {
+      "id": "decoder",
+      "file": "Repuestos-Exactos/lib/features/diagnostic/data/protocol/obd_decoder.dart",
+      "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/diagnostic/data/protocol/obd_decoder.dart",
+      "line": 5,
+      "label": "ISO-TP/CAN y protocolos heredados a observaciones",
+      "type": "protocol",
+      "status": "implemented_source_software_validated",
+      "sha256": "1f6965cee8c6e8e4afecd7172ef7cca62a17257f18bd37be5ca386ee68d8f9aa"
+    },
+    {
+      "id": "http",
+      "file": "Repuestos-Exactos/lib/features/diagnostic/data/repositories/api_diagnostic_sessions_repository.dart",
+      "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/diagnostic/data/repositories/api_diagnostic_sessions_repository.dart",
+      "line": 10,
+      "label": "Repositorio HTTP tipado",
+      "type": "frontend",
+      "status": "implemented_source_software_validated",
+      "sha256": "014d9ece0e4b2e21c637c5fb121bcc1c98af4c1a50b53504f447cda1a419b2fa"
+    },
+    {
+      "id": "route",
+      "file": "Backend_Repuestos_Exactos/routes/sessions/index.dart",
+      "absolutePath": "C:/__apps/re-app/Backend_Repuestos_Exactos/routes/sessions/index.dart",
+      "line": 14,
+      "label": "GET historial / POST captura autenticados",
+      "type": "backend",
+      "status": "implemented_source_software_validated",
+      "sha256": "f77dc939331839b2a0b1aa6ddb782a0245ea17ae7c25b19d6034652be05f4457"
+    },
+    {
+      "id": "dto",
+      "file": "Backend_Repuestos_Exactos/lib/features/diagnostics/dto/create_scan_request.dart",
+      "absolutePath": "C:/__apps/re-app/Backend_Repuestos_Exactos/lib/features/diagnostics/dto/create_scan_request.dart",
+      "line": 9,
+      "label": "Validación, límites y huella canónica",
+      "type": "backend",
+      "status": "implemented_source_software_validated",
+      "sha256": "e86ec538aa520e29aa7fcaeb8524ee3f3f4612d5b8e40af9f98aeb437c8117c2"
+    },
+    {
+      "id": "service",
+      "file": "Backend_Repuestos_Exactos/lib/features/diagnostics/services/diagnostic_capture_service.dart",
+      "absolutePath": "C:/__apps/re-app/Backend_Repuestos_Exactos/lib/features/diagnostics/services/diagnostic_capture_service.dart",
+      "line": 7,
+      "label": "Caso de uso: crear y recuperar detalle",
+      "type": "backend",
+      "status": "implemented_source_software_validated",
+      "sha256": "9cd215146e940538c7c9cdee6fe4337eb7ad724ec92f7f90a818418f2ca60fa4"
+    },
+    {
+      "id": "sql",
+      "file": "Backend_Repuestos_Exactos/lib/features/diagnostics/repositories/diagnostic_capture_repository.dart",
+      "absolutePath": "C:/__apps/re-app/Backend_Repuestos_Exactos/lib/features/diagnostics/repositories/diagnostic_capture_repository.dart",
+      "line": 11,
+      "label": "SQL vinculado al contexto autenticado del taller",
+      "type": "backend",
+      "status": "implemented_source_software_validated",
+      "sha256": "de08a480242f403dcfaacd2cc4d693771905504f2ca828662dbf1a0c9223056b"
+    },
+    {
+      "id": "migration",
+      "file": "RE-db/db/migrations/V015__captura_obd.sql",
+      "absolutePath": "C:/__apps/re-app/RE-db/db/migrations/V015__captura_obd.sql",
+      "line": 30,
+      "label": "Observaciones, claves de reintento, RLS y auditoría",
+      "type": "database",
+      "status": "implemented_source_software_validated",
+      "sha256": "e39aaa73e59f090e2c8e811662bdf8dc71b63a2e2955911d15c7f6bf856fbab6"
+    },
+    {
+      "id": "history",
+      "file": "Repuestos-Exactos/lib/features/diagnostic/presentation/views/diagnostic_detail_screen.dart",
+      "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/diagnostic/presentation/views/diagnostic_detail_screen.dart",
+      "line": 8,
+      "label": "Consulta del diagnóstico persistido",
+      "type": "frontend",
+      "status": "implemented_source_software_validated",
+      "sha256": "b08f478171db13013d9338f98347678432f0de88717f7324eb34b87ccb07d780"
+    },
+    {
+      "id": "parts",
+      "file": "Repuestos-Exactos/lib/features/diagnostic/presentation/views/diagnostic_parts_screen.dart",
+      "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/diagnostic/presentation/views/diagnostic_parts_screen.dart",
+      "line": 8,
+      "label": "Búsqueda externa con contexto de sesión",
+      "type": "frontend",
+      "status": "implemented_source_software_validated",
+      "sha256": "4be78dda9ae2c03875fbd9ca8d2570ae6fbbfbd14fc88443e2ffdd340deb52ae"
+    },
+    {
+      "id": "vin-decoder",
+      "file": "Repuestos-Exactos/lib/features/diagnostic/data/protocol/obd_vin_decoder.dart",
+      "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/diagnostic/data/protocol/obd_vin_decoder.dart",
+      "line": 5,
+      "label": "Decodificación VIN con consenso entre ECU",
+      "type": "frontend",
+      "status": "implemented_software_validated_hardware_pending",
+      "sha256": "cb18482290d859aa608cebd14fd5979bd1681baa7c51a12c7f2920fc2589cd16"
+    },
+    {
+      "id": "vin-card",
+      "file": "Repuestos-Exactos/lib/features/diagnostic/presentation/widgets/vin_reading_card.dart",
+      "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/diagnostic/presentation/widgets/vin_reading_card.dart",
+      "line": 3,
+      "label": "Identidad leída o registrada y alternativa manual",
+      "type": "frontend",
+      "status": "implemented_software_validated_hardware_pending",
+      "sha256": "c48a02107d77a28a504c46e5353f6868f53b43ca588beb4869063f1b9dec5194"
+    }
+  ],
+  "edges": [
+    {
+      "from": "screen",
+      "to": "controller"
+    },
+    {
+      "from": "controller",
+      "to": "scanner"
+    },
+    {
+      "from": "scanner",
+      "to": "elm"
+    },
+    {
+      "from": "elm",
+      "to": "serial"
+    },
+    {
+      "from": "scanner",
+      "to": "decoder"
+    },
+    {
+      "from": "controller",
+      "to": "http"
+    },
+    {
+      "from": "http",
+      "to": "route"
+    },
+    {
+      "from": "route",
+      "to": "dto"
+    },
+    {
+      "from": "route",
+      "to": "service"
+    },
+    {
+      "from": "service",
+      "to": "sql"
+    },
+    {
+      "from": "sql",
+      "to": "migration"
+    },
+    {
+      "from": "sql",
+      "to": "history"
+    },
+    {
+      "from": "history",
+      "to": "parts"
+    },
+    {
+      "from": "scanner",
+      "to": "vin-decoder"
+    },
+    {
+      "from": "vin-decoder",
+      "to": "controller"
+    },
+    {
+      "from": "controller",
+      "to": "vin-card"
+    }
+  ],
+  "sources": [
+    {
+      "id": "android_permissions",
+      "url": "https://developer.android.com/develop/connectivity/bluetooth/bt-permissions"
+    },
+    {
+      "id": "android_classic",
+      "url": "https://developer.android.com/develop/connectivity/bluetooth/connect-bluetooth-devices"
+    },
+    {
+      "id": "chrome_serial_bluetooth",
+      "url": "https://developer.chrome.com/blog/serial-over-bluetooth"
+    },
+    {
+      "id": "chrome_serial",
+      "url": "https://developer.chrome.com/docs/capabilities/serial"
+    },
+    {
+      "id": "chrome_ble",
+      "url": "https://developer.chrome.com/docs/capabilities/bluetooth"
+    },
+    {
+      "id": "windows_rfcomm",
+      "url": "https://learn.microsoft.com/en-us/windows/apps/develop/devices-sensors/send-or-receive-files-with-rfcomm"
+    },
+    {
+      "id": "flutter_channels",
+      "url": "https://docs.flutter.dev/platform-integration/platform-channels"
+    },
+    {
+      "id": "flutter_architecture",
+      "url": "https://docs.flutter.dev/app-architecture/guide"
+    },
+    {
+      "id": "reactive_ble",
+      "url": "https://pub.dev/packages/flutter_reactive_ble"
+    },
+    {
+      "id": "reactive_ble_license",
+      "url": "https://pub.dev/packages/flutter_reactive_ble/license"
+    },
+    {
+      "id": "flutter_blue_plus",
+      "url": "https://pub.dev/packages/flutter_blue_plus"
+    },
+    {
+      "id": "flutter_blue_plus_license",
+      "url": "https://pub.dev/packages/flutter_blue_plus/license"
+    },
+    {
+      "id": "elm327",
+      "url": "https://www.elmelectronics.com/wp-content/uploads/2016/07/ELM327DS.pdf"
+    },
+    {
+      "id": "obd_solutions_lab",
+      "url": "https://www.scantool.net/scantool/downloads/194/18060_IVN_lab_manual.pdf"
+    },
+    {
+      "id": "enhanced_diagnostics",
+      "url": "https://support.obdlink.com/support/solutions/articles/43000705533"
+    },
+    {
+      "id": "vgate_mc",
+      "url": "https://www.vgatemall.com/products-detail/i-12/"
+    },
+    {
+      "id": "vgate_mc_faq",
+      "url": "https://www.vgatemall.com/faq?page=4"
+    }
+  ],
+  "currentFlow": [
+    "Registrar/elegir vehículo visible y adaptador del taller",
+    "Elegir puerto SPP con gesto del usuario y conectar",
+    "Leer estado y códigos 03/07/0A sin borrar memoria",
+    "Revisar ECU, categoría y servicios vacíos/no disponibles/parciales",
+    "Guardar con clave estable: transacción autenticada y observaciones desconocidas preservadas",
+    "Consultar Historial y detalle; buscar componentes catalogados con session_id",
+    "Guardar alternativa por el flujo existente sin cotización automática"
+  ],
+  "limitations": [
+    "Aceptación física pendiente: radio, permisos, puerto y firmware reales no probados.",
+    "Sólo Windows/Chrome Web Serial en este incremento; no transporte nativo móvil.",
+    "Cobertura OBD genérica; no ABS/airbag ni protocolos OEM garantizados.",
+    "Resumen diario conserva números de prototipo.",
+    "Registro del adaptador es lógico: no verifica identidad física ni MAC.",
+    "Mercado Libre conserva restricciones de catálogo/precio/disponibilidad del incremento anterior."
+  ],
+  "validation": "bluetooth_validacion.json",
+  "baselineAnalysis": {
+    "schemaVersion": 1,
+    "reviewDate": "2026-11-01",
+    "timezone": "America/Santiago",
+    "workspace": "C:/__apps/re-app",
+    "subject": "Bluetooth OBD2: estado actual y arquitectura de captura, persistencia e historial",
+    "status": "historical_analysis_before_this_implementation_not_current_source",
+    "repositories": {
+      "Repuestos-Exactos": {
+        "branch": "feat/integracion_api",
+        "head": "eafed776754c349107b49d79bb1638ea1226b6f2"
+      },
+      "Backend_Repuestos_Exactos": {
+        "branch": "feat/integracion_api",
+        "head": "9849be3919d3bbcfbbab5a66ae5f91db7098e23f"
+      },
+      "RE-db": {
+        "branch": "feat/integracion_api",
+        "head": "bace6c4d0eb8fa4fc98d3c6700caa7c1bb4cff13"
+      }
+    },
+    "method": {
+      "source": "Código actual contrastado con grafo indexado de rutas antiguas. PostgreSQL consultado sólo para permisos y conteo de catálogo.",
+      "web": "Documentación primaria de fabricantes, Android, Chrome, Flutter y autores de paquetes.",
+      "hardware": "Sin prueba con un adaptador físico; modelo y plataforma objetivo pendientes de confirmación."
+    },
+    "nodes": [
+      {
+        "id": "home",
+        "file": "Repuestos-Exactos/lib/features/home/presentation/views/home_screen.dart",
+        "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/home/presentation/views/home_screen.dart",
+        "line": 69,
+        "label": "Inicio del flujo",
+        "type": "frontend",
+        "status": "confirmed_source",
+        "sha256": "7a34bb9f55bad0920264651b93d63d07d49a21f54972ea2b9a785d1a5bea329d"
+      },
+      {
+        "id": "route",
+        "file": "Repuestos-Exactos/lib/core/routing/app_router.dart",
+        "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/core/routing/app_router.dart",
+        "line": 39,
+        "label": "Ruta de diagnóstico",
+        "type": "frontend",
+        "status": "confirmed_source",
+        "sha256": "f04241ace45bc86ed205fb3e733307a1a422c16640851e8cc1379b7ecb7a31e3"
+      },
+      {
+        "id": "simulation",
+        "file": "Repuestos-Exactos/lib/features/diagnostic/presentation/views/diagnostic_screen.dart",
+        "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/diagnostic/presentation/views/diagnostic_screen.dart",
+        "line": 22,
+        "label": "Simulación con tiempos y P0171 fijos",
+        "type": "frontend",
+        "status": "confirmed_source",
+        "sha256": "54c3c1308dac452267683a2d5fe3e0055a4f98883c40b97d4f531a5b84e66f33"
+      },
+      {
+        "id": "single_report",
+        "file": "Repuestos-Exactos/lib/data/models/diagnostic.dart",
+        "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/data/models/diagnostic.dart",
+        "line": 1,
+        "label": "Informe de un solo DTC y opciones fijas",
+        "type": "frontend",
+        "status": "confirmed_source",
+        "sha256": "cd1594f1daca1ad446d98643dabdf529c22f3811cf447e496293a469848762ad"
+      },
+      {
+        "id": "dependencies",
+        "file": "Repuestos-Exactos/pubspec.yaml",
+        "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/pubspec.yaml",
+        "line": 30,
+        "label": "Sin dependencia de transporte Bluetooth",
+        "type": "config",
+        "status": "confirmed_source",
+        "sha256": "58e35a0bd9de7dfc5a9e01c54a6f22a8dbfe60e51e5e728261081d4ad43d3407"
+      },
+      {
+        "id": "android_permissions",
+        "file": "Repuestos-Exactos/android/app/src/main/AndroidManifest.xml",
+        "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/android/app/src/main/AndroidManifest.xml",
+        "line": 2,
+        "label": "Sólo permiso de Internet",
+        "type": "config",
+        "status": "confirmed_source",
+        "sha256": "99b37c71389f205a4231b169a67c2ef0ec5c7813912051e0807bfd6a2e7d34f5"
+      },
+      {
+        "id": "session_route",
+        "file": "Backend_Repuestos_Exactos/routes/sessions/index.dart",
+        "absolutePath": "C:/__apps/re-app/Backend_Repuestos_Exactos/routes/sessions/index.dart",
+        "line": 9,
+        "label": "Sesiones sólo de lectura HTTP",
+        "type": "backend",
+        "status": "confirmed_source",
+        "sha256": "ba4e78fbf650dbe8af8639668d614207ddf9d4b20ba05c19345a043f63856bc3"
+      },
+      {
+        "id": "session_repo",
+        "file": "Backend_Repuestos_Exactos/lib/features/diagnostics/repositories/diagnostic_repository.dart",
+        "absolutePath": "C:/__apps/re-app/Backend_Repuestos_Exactos/lib/features/diagnostics/repositories/diagnostic_repository.dart",
+        "line": 28,
+        "label": "Historial SQL autenticado",
+        "type": "backend",
+        "status": "confirmed_source",
+        "sha256": "deea1043ed8615d4a3fcc82cdd6edd806f861d2cd6c71b4379792b5c88b609ea"
+      },
+      {
+        "id": "device_table",
+        "file": "RE-db/db/migrations/V003__tablas_operativas.sql",
+        "absolutePath": "C:/__apps/re-app/RE-db/db/migrations/V003__tablas_operativas.sql",
+        "line": 224,
+        "label": "Dispositivo exige MACADDR",
+        "type": "database",
+        "status": "confirmed_source",
+        "sha256": "d982dca0fbf6a6db13b202a144f57fcda795b111cf98253780f7dc65ddbadc77"
+      },
+      {
+        "id": "session_table",
+        "file": "RE-db/db/migrations/V003__tablas_operativas.sql",
+        "absolutePath": "C:/__apps/re-app/RE-db/db/migrations/V003__tablas_operativas.sql",
+        "line": 243,
+        "label": "Sesión con vehículo y kilometraje obligatorios",
+        "type": "database",
+        "status": "confirmed_source",
+        "sha256": "d982dca0fbf6a6db13b202a144f57fcda795b111cf98253780f7dc65ddbadc77"
+      },
+      {
+        "id": "fault_table",
+        "file": "RE-db/db/migrations/V003__tablas_operativas.sql",
+        "absolutePath": "C:/__apps/re-app/RE-db/db/migrations/V003__tablas_operativas.sql",
+        "line": 290,
+        "label": "Falla vinculada a catálogo, PK por sesión y DTC",
+        "type": "database",
+        "status": "confirmed_source",
+        "sha256": "d982dca0fbf6a6db13b202a144f57fcda795b111cf98253780f7dc65ddbadc77"
+      },
+      {
+        "id": "create_sql",
+        "file": "RE-db/db/queries/t01_vehiculos_y_sesiones.sql",
+        "absolutePath": "C:/__apps/re-app/RE-db/db/queries/t01_vehiculos_y_sesiones.sql",
+        "line": 61,
+        "label": "Transacción de creación no expuesta por API",
+        "type": "database",
+        "status": "confirmed_source",
+        "sha256": "89bb2a231232ac91c0eb63434fda0730b5686992121a3888a215d0c158c5138f"
+      },
+      {
+        "id": "google_native",
+        "file": "Repuestos-Exactos/lib/features/auth/presentation/widgets/google_button_stub.dart",
+        "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/auth/presentation/widgets/google_button_stub.dart",
+        "line": 17,
+        "label": "Google nativo todavía es stub",
+        "type": "frontend",
+        "status": "confirmed_source",
+        "sha256": "7ac5c361c6a1b051b5ccbc28be1b1dcaed6414b2d006884ca1815fbc9364c59b"
+      },
+      {
+        "id": "api_config",
+        "file": "Repuestos-Exactos/lib/core/network/api_config.dart",
+        "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/core/network/api_config.dart",
+        "line": 4,
+        "label": "Android usa dirección de emulador por defecto",
+        "type": "frontend",
+        "status": "confirmed_source",
+        "sha256": "159cf8936e18f5decc90e6f06393663655e39a4ea14377d15f4bcbd6ba87e2ba"
+      },
+      {
+        "id": "external_context",
+        "file": "Backend_Repuestos_Exactos/lib/features/offers/repositories/offer_plan_repository.dart",
+        "absolutePath": "C:/__apps/re-app/Backend_Repuestos_Exactos/lib/features/offers/repositories/offer_plan_repository.dart",
+        "line": 56,
+        "label": "Mercado Libre ya valida sesión y falla asociadas",
+        "type": "backend",
+        "status": "confirmed_source",
+        "sha256": "7fae444b2b79cc9a4b40e02c107aa0ec9c0e0b979d4e111a0e863b9a06707dc5"
+      }
+    ],
+    "edges": [
+      {
+        "from": "home",
+        "to": "route",
+        "kind": "navigation",
+        "status": "confirmed_source"
+      },
+      {
+        "from": "route",
+        "to": "simulation",
+        "kind": "screen_init",
+        "status": "confirmed_source"
+      },
+      {
+        "from": "simulation",
+        "to": "single_report",
+        "kind": "hardcoded_result",
+        "status": "confirmed_source"
+      },
+      {
+        "from": "session_route",
+        "to": "session_repo",
+        "kind": "service_repository",
+        "status": "confirmed_source"
+      },
+      {
+        "from": "session_repo",
+        "to": "session_table",
+        "kind": "read_sql",
+        "status": "confirmed_source"
+      },
+      {
+        "from": "session_repo",
+        "to": "fault_table",
+        "kind": "read_sql",
+        "status": "confirmed_source"
+      },
+      {
+        "from": "create_sql",
+        "to": "session_table",
+        "kind": "sql_contract_only",
+        "status": "confirmed_source"
+      },
+      {
+        "from": "create_sql",
+        "to": "fault_table",
+        "kind": "sql_contract_only",
+        "status": "confirmed_source"
+      }
+    ],
+    "runtimeObservations": {
+      "database": "repuestos_exactos",
+      "dtcCatalogCount": 12,
+      "rolePrivileges": {
+        "taller_admin": {
+          "insertSession": true,
+          "insertFault": true,
+          "registerDevice": true
+        },
+        "taller_mecanico": {
+          "insertSession": true,
+          "insertFault": true,
+          "registerDevice": false
+        }
+      },
+      "scope": "Privilegios consultados en PostgreSQL; no equivalen a una prueba física ni de las rutas propuestas."
+    },
+    "findings": [
+      {
+        "id": "BT-01",
+        "status": "confirmed",
+        "evidence": [
+          "simulation",
+          "dependencies",
+          "android_permissions"
+        ],
+        "finding": "No existe captura Bluetooth: se simulan dos y tres segundos, un solo P0171 y precios fijos."
+      },
+      {
+        "id": "BT-02",
+        "status": "confirmed",
+        "evidence": [
+          "session_route",
+          "create_sql"
+        ],
+        "finding": "GET /sessions existe; POST /sessions y detalle de sesión no están implementados. La sentencia SQL de creación sí existe."
+      },
+      {
+        "id": "BT-03",
+        "status": "confirmed",
+        "evidence": [
+          "fault_table",
+          "create_sql"
+        ],
+        "finding": "Todo DTC exige catálogo. Un código desconocido aborta la transacción; no puede descartarse silenciosamente en una captura real."
+      },
+      {
+        "id": "BT-04",
+        "status": "confirmed",
+        "evidence": [
+          "fault_table"
+        ],
+        "finding": "La PK sesión/DTC no conserva por sí sola observaciones por ECU ni categorías stored/pending/permanent."
+      },
+      {
+        "id": "BT-05",
+        "status": "confirmed",
+        "evidence": [
+          "device_table"
+        ],
+        "finding": "MACADDR NOT NULL no representa identificadores opacos de web/iOS ni direcciones BLE variables."
+      },
+      {
+        "id": "BT-06",
+        "status": "confirmed",
+        "evidence": [
+          "session_table"
+        ],
+        "finding": "Se requieren vehículo del taller y kilometraje. No se debe inventar VIN, modelo ni kilometraje cuando OBD no los entregue."
+      },
+      {
+        "id": "BT-07",
+        "status": "confirmed",
+        "evidence": [
+          "google_native",
+          "api_config"
+        ],
+        "finding": "Para Android físico hay que configurar API_BASE_URL accesible; Google nativo no está implementado. El login tradicional puede ser el acceso inicial."
+      }
+    ],
+    "decisionGates": [
+      {
+        "id": "hardware",
+        "status": "model_and_bluetooth_family_identified_physical_profile_pending",
+        "requires": [
+          "Confirmar etiqueta del aparato y nombre Bluetooth anunciado",
+          "Verificar emparejamiento y servicio serie expuesto",
+          "Leer identificación y firmware del aparato",
+          "Confirmar plataforma inicial: navegador Windows o Android instalado"
+        ]
+      },
+      {
+        "id": "platform",
+        "status": "pending_user_information",
+        "provisionalRecommendation": "Probar primero en el Windows con Chrome donde se usa actualmente el frontend, mediante Web Serial y dispositivo emparejado. La combinación exacta debe validarse físicamente; Android instalado con RFCOMM es otra implementación del mismo contrato de transporte."
+      }
+    ],
+    "platformOptions": [
+      {
+        "platform": "Android instalado",
+        "classic": "RFCOMM/SPP con BluetoothSocket, mediante adaptador nativo Kotlin/Pigeon o plugin mantenido validado.",
+        "ble": "GATT con flutter_reactive_ble como candidato. No comunica con SPP.",
+        "requirements": [
+          "Permisos de descubrimiento/conexión solicitados en runtime según Android",
+          "Perfil del adaptador",
+          "Pruebas físicas",
+          "API_BASE_URL del servidor y login utilizable"
+        ],
+        "sources": [
+          "android_permissions",
+          "android_classic",
+          "reactive_ble",
+          "flutter_channels"
+        ]
+      },
+      {
+        "platform": "Flutter web en Chrome de escritorio",
+        "classic": "Web Serial sobre RFCOMM de dispositivo emparejado; requiere implementación JS interop.",
+        "ble": "Web Bluetooth con servicios y características autorizados.",
+        "requirements": [
+          "Feature detection",
+          "Contexto seguro y gesto del usuario",
+          "Permiso del navegador",
+          "Prueba concreta de sistema operativo, navegador y adaptador"
+        ],
+        "sources": [
+          "chrome_serial_bluetooth",
+          "chrome_serial",
+          "chrome_ble"
+        ]
+      },
+      {
+        "platform": "Windows instalado",
+        "classic": "Implementación WinRT RFCOMM o puerto serie compatible, detrás del mismo contrato de bytes.",
+        "ble": "Implementación GATT para Windows, seleccionada y probada aparte.",
+        "requirements": [
+          "Emparejamiento y capacidades del empaquetado utilizado",
+          "Plugin compatible o puente nativo"
+        ],
+        "sources": [
+          "windows_rfcomm",
+          "flutter_channels"
+        ]
+      },
+      {
+        "platform": "iOS instalado",
+        "classic": "Validar accesorio y ruta de integración del fabricante; no asumir que SPP genérico funciona.",
+        "ble": "Candidato con transporte GATT e identificador UUID del sistema.",
+        "requirements": [
+          "Permisos Bluetooth",
+          "Google nativo o login tradicional",
+          "Adaptador con soporte documentado"
+        ],
+        "sources": [
+          "reactive_ble"
+        ]
+      }
+    ],
+    "architecture": {
+      "localHardwareOwner": "La aplicación que corre junto al vehículo. Un backend remoto/Docker no se empareja con el Bluetooth del teléfono o PC del técnico.",
+      "layers": [
+        {
+          "layer": "presentation",
+          "responsibility": "Pantalla y DiagnosticController: selección de vehículo/dispositivo, progreso, cancelación y resultados múltiples."
+        },
+        {
+          "layer": "domain",
+          "responsibility": "ObdScan, DtcObservation y contratos DiagnosticScanner y DiagnosticSessionsRepository sin dependencias de plugins."
+        },
+        {
+          "layer": "data/transports",
+          "responsibility": "ObdTransport expone bytes y desconexión. Implementaciones separadas BLE, clásico, web y no compatible."
+        },
+        {
+          "layer": "data/protocol",
+          "responsibility": "Elm327Client serializa comandos; framer acumula hasta prompt; decoders interpretan DTC/VIN y respuestas por ECU."
+        },
+        {
+          "layer": "data/repositories",
+          "responsibility": "Scanner convierte transporte/protocolo en un informe; repositorio HTTP persiste por ApiClient y reintenta con la misma idempotencia."
+        },
+        {
+          "layer": "backend",
+          "responsibility": "Ruta → DTO → DiagnosticService → DiagnosticRepository, con taller/usuario del contexto autenticado y transacción breve."
+        },
+        {
+          "layer": "database",
+          "responsibility": "Catálogos, captura técnica, sesión y fallas bajo RLS; auditoría e idempotencia atómicas."
+        }
+      ],
+      "proposedFiles": {
+        "frontend": [
+          "lib/features/diagnostic/domain/entities/obd_scan.dart",
+          "lib/features/diagnostic/domain/entities/dtc_observation.dart",
+          "lib/features/diagnostic/domain/entities/scan_state.dart",
+          "lib/features/diagnostic/domain/repositories/diagnostic_scanner.dart",
+          "lib/features/diagnostic/domain/repositories/diagnostic_sessions_repository.dart",
+          "lib/features/diagnostic/data/transports/obd_transport.dart",
+          "lib/features/diagnostic/data/transports/ble_obd_transport.dart",
+          "lib/features/diagnostic/data/transports/classic_obd_transport.dart",
+          "lib/features/diagnostic/data/transports/web_serial_obd_transport.dart",
+          "lib/features/diagnostic/data/transports/unsupported_obd_transport.dart",
+          "lib/features/diagnostic/data/protocol/elm327_client.dart",
+          "lib/features/diagnostic/data/protocol/elm_response_framer.dart",
+          "lib/features/diagnostic/data/protocol/dtc_decoder.dart",
+          "lib/features/diagnostic/data/protocol/vin_decoder.dart",
+          "lib/features/diagnostic/data/repositories/obd_diagnostic_scanner.dart",
+          "lib/features/diagnostic/data/repositories/api_diagnostic_sessions_repository.dart",
+          "lib/features/diagnostic/presentation/controllers/diagnostic_controller.dart"
+        ],
+        "backend": [
+          "routes/diagnostic-devices/index.dart",
+          "routes/sessions/[id]/index.dart",
+          "lib/features/diagnostics/dto/create_diagnostic_request.dart",
+          "lib/features/diagnostics/dto/diagnostic_detail_dto.dart"
+        ],
+        "existingFilesToExtend": [
+          "Repuestos-Exactos/lib/features/diagnostic/presentation/views/diagnostic_screen.dart",
+          "Repuestos-Exactos/lib/core/routing/app_router.dart",
+          "Repuestos-Exactos/lib/main.dart",
+          "Backend_Repuestos_Exactos/routes/sessions/index.dart",
+          "Backend_Repuestos_Exactos/lib/features/diagnostics/services/diagnostic_service.dart",
+          "Backend_Repuestos_Exactos/lib/features/diagnostics/repositories/diagnostic_repository.dart"
+        ]
+      },
+      "principles": [
+        "Implementar únicamente el transporte elegido para el primer alcance; los demás son extensiones, no requisitos iniciales.",
+        "Bluetooth y HTTP nunca dentro de widgets.",
+        "No mantener una transacción SQL abierta durante el escaneo físico.",
+        "La simulación debe ser un fake inyectable de pruebas o una demo identificada, no el resultado de producción."
+      ]
+    },
+    "proposedFlow": [
+      {
+        "step": 1,
+        "actor": "Técnico/UI",
+        "action": "Autenticarse; elegir un vehículo existente y kilometraje real; elegir un dispositivo activo registrado por propietario."
+      },
+      {
+        "step": 2,
+        "actor": "DiagnosticController/ObdTransport",
+        "action": "Comprobar disponibilidad y permisos, descubrir/seleccionar dispositivo y conectar. El selector del navegador necesita un gesto explícito."
+      },
+      {
+        "step": 3,
+        "actor": "Elm327Client",
+        "action": "Verificar identidad/protocolo de comandos del adaptador y ejecutar inicialización por perfil; no asumir UUIDs GATT universales."
+      },
+      {
+        "step": 4,
+        "actor": "Elm327Client/ECU",
+        "action": "Negociar protocolo del vehículo y comprobar comunicación antes de interpretar códigos."
+      },
+      {
+        "step": 5,
+        "actor": "DtcDecoder/VinDecoder",
+        "action": "Leer servicios soportados, múltiples DTC/ECU y VIN opcional; preservar categorías y resultados parciales."
+      },
+      {
+        "step": 6,
+        "actor": "DiagnosticController",
+        "action": "Presentar lectura real y advertencias; VIN discrepante exige resolver el vehículo. Lectura incompleta no se presenta como ausencia de fallas."
+      },
+      {
+        "step": 7,
+        "actor": "ApiDiagnosticSessionsRepository",
+        "action": "Enviar el informe completo normalizado mediante POST /sessions y una clave de idempotencia estable para reintentos."
+      },
+      {
+        "step": 8,
+        "actor": "Backend",
+        "action": "Revalidar propietario/mecánico, vehículo y dispositivo del taller; validar límites, formato y categorías; severidad y estado no son valores confiables del dispositivo."
+      },
+      {
+        "step": 9,
+        "actor": "PostgreSQL",
+        "action": "Guardar captura, observaciones, sesión y proyección de fallas conocidas de forma atómica; retener DTC desconocidos como no catalogados."
+      },
+      {
+        "step": 10,
+        "actor": "API/UI",
+        "action": "Devolver UUID de sesión, refrescar GET /sessions y abrir GET /sessions/{id} para ver todos los códigos y advertencias."
+      },
+      {
+        "step": 11,
+        "actor": "Técnico/Búsqueda",
+        "action": "Seleccionar una falla conocida y componente candidato, pasando session_id, vehicle_id, model y year al flujo existente de Mercado Libre."
+      },
+      {
+        "step": 12,
+        "actor": "POST /saved-parts",
+        "action": "Guardar la alternativa con el recibo ligado a la sesión/vehículo; mostrarla en el historial de alternativas sin crear una compra ni cambiar el diagnóstico."
+      }
+    ],
+    "protocolProposal": {
+      "status": "conditional_on_ELM327_compatible_adapter",
+      "initialization": [
+        "ATZ",
+        "ATE0",
+        "ATL0",
+        "ATS1",
+        "ATH1",
+        "ATSP0"
+      ],
+      "probe": [
+        "0100",
+        "0101",
+        "ATDP"
+      ],
+      "read": [
+        "03 (stored)",
+        "07 (pending, si está soportado)",
+        "0A (permanent, si está soportado)",
+        "0902 (VIN opcional)",
+        "02 (freeze frame opcional posterior)"
+      ],
+      "framing": [
+        "Comandos ASCII terminados en carriage return; una orden en vuelo.",
+        "Acumular paquetes/notificaciones hasta prompt >; límites de tamaño y timeout por perfil.",
+        "Separar eco, mensajes de estado, cabeceras, ECU y carga útil; tratar CAN multiframe según formato del adaptador.",
+        "No convertir un fallo de comunicación o NO DATA aislado en un diagnóstico sin fallas; contrastar soporte de servicio y estado MIL/DTC.",
+        "Cancelar y desconectar cierran streams; una reconexión reinicia contexto, descubre nuevamente GATT y evita mezclar lecturas de vehículos distintos."
+      ],
+      "excluded": [
+        "Borrado de DTC por modo 04",
+        "Pruebas activas y codificación de ECU",
+        "Cobertura ABS/airbag o fabricantes no validada"
+      ],
+      "sources": [
+        "elm327",
+        "obd_solutions_lab",
+        "enhanced_diagnostics"
+      ]
+    },
+    "apiProposal": {
+      "status": "not_implemented",
+      "routes": [
+        {
+          "method": "GET",
+          "path": "/diagnostic-devices",
+          "roles": [
+            "propietario",
+            "mecanico"
+          ],
+          "purpose": "Dispositivos activos visibles del taller."
+        },
+        {
+          "method": "POST",
+          "path": "/diagnostic-devices",
+          "roles": [
+            "propietario"
+          ],
+          "purpose": "Registrar identidad lógica y perfil de un dispositivo."
+        },
+        {
+          "method": "POST",
+          "path": "/sessions",
+          "roles": [
+            "propietario",
+            "mecanico"
+          ],
+          "purpose": "Guardar captura completa de escaneo y su diagnóstico de manera idempotente; GET existente se conserva."
+        },
+        {
+          "method": "GET",
+          "path": "/sessions/{id}",
+          "roles": [
+            "propietario",
+            "mecanico"
+          ],
+          "purpose": "Detalle bajo RLS con DTC conocidos/desconocidos, categorías, ECU y advertencias."
+        }
+      ],
+      "requestExample": {
+        "vehicle_id": "UUID_VEHICULO",
+        "device_id": "UUID_DISPOSITIVO_REGISTRADO",
+        "kilometraje": 125000,
+        "idempotency_key": "UUID_DE_ESTA_SOLICITUD",
+        "captured_at": "ISO_8601_UTC",
+        "protocol": "ISO_15765_4",
+        "completeness": "complete",
+        "observations": [
+          {
+            "code": "P0301",
+            "ecu": "7E8",
+            "kind": "stored"
+          }
+        ],
+        "warnings": []
+      },
+      "serverControlled": [
+        "taller_id",
+        "usuario_id",
+        "estado del diagnóstico",
+        "fecha de persistencia",
+        "severidad sugerida y descripciones del catálogo"
+      ],
+      "idempotency": "Índice único por taller/clave y hash de solicitud. Misma solicitud devuelve misma sesión; contenido distinto con igual clave devuelve 409.",
+      "offline": "MVP conserva informe y clave mientras se reintenta la subida. Cola persistente offline es una extensión, con aislamiento por usuario/taller y política de conservación."
+    },
+    "databaseProposal": {
+      "status": "requires_new_migration_not_created",
+      "existing": [
+        "dispositivo_diagnostico",
+        "sesion_diagnostico",
+        "falla_sesion",
+        "dtc_catalogo",
+        "repuesto_guardado"
+      ],
+      "changes": [
+        "Identidad lógica de dispositivo independiente de MAC; MAC opcional con restricciones de unicidad compatibles con datos existentes. Identificador local del SO no se usa como autenticación.",
+        "Captura técnica ligada a taller/usuario/dispositivo/vehículo y sesión; registrar alcance, protocolo, completitud y fecha de captura aparte de la hora del servidor.",
+        "Observaciones por captura/ECU/código/categoría, con código normalizado y dtc_id opcional. No inventar descripciones ni insertar automáticamente catálogo global desde el cliente.",
+        "Proyectar códigos conocidos distintos a falla_sesion manteniendo el historial actual; agregar desglose de no catalogados/categorías en detalle y visualización, sin ocultarlos en el total mostrado.",
+        "Idempotencia en base de datos, no sólo en memoria.",
+        "Ajustar permisos de columnas, RLS, auditoría, índices, comentarios y pruebas de esquema para los objetos nuevos."
+      ],
+      "partialCapturePolicy": "En MVP sólo una lectura completa genera una sesión normal. Guardar borradores de lecturas parciales exige un contrato de captura explícito; nunca fingir completitud."
+    },
+    "deliveryOrder": [
+      {
+        "phase": 1,
+        "result": "Perfil de adaptador y plataforma confirmados; prueba física de transporte e intercambio de comandos sin tocar el historial."
+      },
+      {
+        "phase": 2,
+        "result": "Motor OBD tipado con cola, framing, varios DTC, manejo de desconexión y prueba de parser."
+      },
+      {
+        "phase": 3,
+        "result": "Migración compatible, registro de dispositivos, POST de sesión, detalle e idempotencia con pruebas PostgreSQL/RLS."
+      },
+      {
+        "phase": 4,
+        "result": "Sustituir simulación por controlador inyectado y enlazar resultados con búsqueda e historial de alternativas."
+      },
+      {
+        "phase": 5,
+        "result": "Aceptación con adaptador/vehículo reales y regresión del catálogo local, login y Mercado Libre."
+      }
+    ],
+    "acceptanceTests": [
+      "Dispositivo compatible: datos coinciden con una herramienta de referencia para los servicios ensayados.",
+      "Permiso denegado, Bluetooth apagado y transporte no soportado muestran estados recuperables.",
+      "Varias ECU y categorías no se mezclan; paquetes fragmentados, eco, prompt y VIN multiframe se interpretan correctamente.",
+      "Cero códigos válido, servicio no soportado y lectura incompleta se distinguen.",
+      "DTC fuera de los 12 del catálogo se conserva sin descripciones inventadas ni pérdida de los otros códigos.",
+      "Timeout y reconexión invalidan comandos pendientes y el contexto previo.",
+      "Cancelar, salir de pantalla, logout y cambio de taller liberan conexión y listeners.",
+      "Fallo de red después de guardar permite reintento sin duplicar sesión.",
+      "Owner/mecánico guardan sólo en su taller; dispositivo inactivo/ajeno y vehículo ajeno se rechazan.",
+      "Escaneo guardado aparece en historial y detalle; elegir componente permite guardar alternativa asociada al mismo diagnóstico.",
+      "El modelo escaneado no se presupone a partir del VIN ni se envía VIN al marketplace.",
+      "No se envían comandos de borrado ni pruebas activas."
+    ],
+    "sources": [
+      {
+        "id": "android_permissions",
+        "url": "https://developer.android.com/develop/connectivity/bluetooth/bt-permissions"
+      },
+      {
+        "id": "android_classic",
+        "url": "https://developer.android.com/develop/connectivity/bluetooth/connect-bluetooth-devices"
+      },
+      {
+        "id": "chrome_serial_bluetooth",
+        "url": "https://developer.chrome.com/blog/serial-over-bluetooth"
+      },
+      {
+        "id": "chrome_serial",
+        "url": "https://developer.chrome.com/docs/capabilities/serial"
+      },
+      {
+        "id": "chrome_ble",
+        "url": "https://developer.chrome.com/docs/capabilities/bluetooth"
+      },
+      {
+        "id": "windows_rfcomm",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/devices-sensors/send-or-receive-files-with-rfcomm"
+      },
+      {
+        "id": "flutter_channels",
+        "url": "https://docs.flutter.dev/platform-integration/platform-channels"
+      },
+      {
+        "id": "flutter_architecture",
+        "url": "https://docs.flutter.dev/app-architecture/guide"
+      },
+      {
+        "id": "reactive_ble",
+        "url": "https://pub.dev/packages/flutter_reactive_ble"
+      },
+      {
+        "id": "reactive_ble_license",
+        "url": "https://pub.dev/packages/flutter_reactive_ble/license"
+      },
+      {
+        "id": "flutter_blue_plus",
+        "url": "https://pub.dev/packages/flutter_blue_plus"
+      },
+      {
+        "id": "flutter_blue_plus_license",
+        "url": "https://pub.dev/packages/flutter_blue_plus/license"
+      },
+      {
+        "id": "elm327",
+        "url": "https://www.elmelectronics.com/wp-content/uploads/2016/07/ELM327DS.pdf"
+      },
+      {
+        "id": "obd_solutions_lab",
+        "url": "https://www.scantool.net/scantool/downloads/194/18060_IVN_lab_manual.pdf"
+      },
+      {
+        "id": "enhanced_diagnostics",
+        "url": "https://support.obdlink.com/support/solutions/articles/43000705533"
+      },
+      {
+        "id": "vgate_mc",
+        "url": "https://www.vgatemall.com/products-detail/i-12/"
+      },
+      {
+        "id": "vgate_mc_faq",
+        "url": "https://www.vgatemall.com/faq?page=4"
+      }
+    ],
+    "packageDecision": {
+      "status": "not_selected_until_hardware_confirmation",
+      "bleCandidate": "flutter_reactive_ble publica soporte Android/iOS y licencia BSD; exige perfil de UUID/propiedades del adaptador.",
+      "alternative": "flutter_blue_plus sólo BLE; su licencia publicada actual requiere licencia comercial para uso con fines de lucro. No seleccionarlo suponiendo que también resuelve SPP.",
+      "classic": "Evaluar plugin mantenido contra hardware o puente Kotlin/Pigeon de RFCOMM; no elegir una dependencia antigua sólo por llevar Bluetooth en el nombre.",
+      "hardwareUpdate": "Para el MC Bluetooth 3.0 de la caja, priorizar transporte clásico. BLE no es el camino inicial de este modelo. La elección entre Web Serial en Windows y RFCOMM nativo Android depende de la plataforma acordada."
+    },
+    "hardwareIdentification": {
+      "status": "model_identified_from_user_box_photo_transport_documented_physical_connection_pending",
+      "brand": "Vgate",
+      "model": "vLinker MC Bluetooth",
+      "boxEvidence": "Foto aportada por el usuario: vLinker MC Bluetooth, SW-CAN (GM), MS-CAN (Ford). No se observa signo + en el modelo.",
+      "manufacturerVariant": "MC Bluetooth 3.0",
+      "manufacturerPlatforms": [
+        "Android",
+        "Windows"
+      ],
+      "transport": "Bluetooth clásico; implementación de canal serie RFCOMM/SPP a validar físicamente",
+      "notSelected": "Los adaptadores BLE de la propuesta general no corresponden al transporte inicial de esta variante.",
+      "manufacturerSources": [
+        "https://www.vgatemall.com/products-detail/i-12/",
+        "https://www.vgatemall.com/faq?page=4"
+      ],
+      "pending": [
+        "Confirmar etiqueta del aparato y nombre Bluetooth anunciado",
+        "Verificar emparejamiento y servicio serie expuesto",
+        "Leer identificación y firmware del aparato",
+        "Confirmar plataforma inicial: navegador Windows o Android instalado"
+      ]
+    }
+  },
+  "vinUpdate": {
+    "command": "0902",
+    "placement": "Después de DTC; tolera fallo de identificación conservando captura",
+    "decode": "Reensamblado ISO-TP/CAN y cinco segmentos heredados, validación y consenso por ECU",
+    "resolve": "GET /vehicles?vin=... protegido por RLS; confirmación manual para identidad nueva",
+    "persist": "POST /sessions con vin opcional: FOR UPDATE vehiculo, contrastar/completar campo VIN existente y crear sesión/observaciones atómicamente",
+    "read": "GET /sessions/{id} devuelve VIN actual registrado del vehículo",
+    "catalog": "RE-db/db/migrations/V016__catalogo_peugeot_3008.sql",
+    "source": "https://www.elmelectronics.com/wp-content/uploads/2016/07/ELM327DSH.pdf#page=42"
+  }
+}

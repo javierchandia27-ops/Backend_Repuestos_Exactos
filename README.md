@@ -28,7 +28,7 @@ Después de cambiar `.env`, dependencias o el arranque personalizado, detener co
 ## Rutas disponibles
 
 - `GET /`: confirma que la API responde, independientemente del estado de PostgreSQL.
-- `GET /health/database`: ejecuta una consulta real y comprueba que la sesión usa `app_backend_user` y que existen `vehiculo`, `sesion_diagnostico` y `cotizacion` en `public`. No lee registros ni lista tablas por HTTP. No valida todas las migraciones, permisos ni columnas.
+- `GET /health/database`: ejecuta una consulta real y comprueba que la sesión usa `app_backend_user` y que existen `vehiculo`, `sesion_diagnostico` y `cotizacion`, `sesion_acceso` y la función `fn_sesion_acceso` en `public`. No lee registros ni lista tablas por HTTP. No valida todas las migraciones, permisos ni columnas.
 
 Conexión correcta: HTTP 200 en `http://localhost:8081/health/database`:
 
@@ -85,7 +85,7 @@ La prueba real verifica metadatos, el rechazo de lectura operativa sin asumir ro
 | /auth/logout | POST | Token Bearer |
 | /settings | GET | Token Bearer; solo su taller |
 
-El token es opaco, dura una hora y su identidad se guarda en el servidor. Se revalidan usuario, taller activo, rol técnico y perfil de negocio en cada petición protegida. Reiniciar la API cierra todas las sesiones. Las rutas nuevas quedan protegidas por defecto; son públicas /, /health/database, /auth/login y los endpoints explícitos /auth/google, /auth/google/config, /auth/google/challenge y /auth/google/complete. Estos últimos validan la credencial o el ticket temporal antes de conceder acceso.
+El token es opaco, dura una hora y su identidad se guarda en el servidor. Se revalidan usuario, taller activo, rol técnico y perfil de negocio en cada petición protegida. Desde V017, reiniciar la API conserva las sesiones en PostgreSQL; el navegador puede renovarlas mediante cookie HttpOnly. Las rutas nuevas quedan protegidas por defecto; son públicas /, /health/database, /auth/login, /auth/refresh y /auth/logout (estos dos últimos validan su propia credencial y protección CSRF), además de los endpoints explícitos /auth/google, /auth/google/config, /auth/google/challenge y /auth/google/complete. Estos últimos validan la credencial o el ticket temporal antes de conceder acceso.
 
 Guía y ejemplos: [docs/autenticacion.md](docs/autenticacion.md).
 
@@ -96,7 +96,7 @@ Guía y ejemplos: [docs/autenticacion.md](docs/autenticacion.md).
 - `GET /catalog/brands`, `/catalog/brands/{marca}/models`, `/catalog/dtc` y `/catalog/dtc/{codigo}/parts`.
 - `GET /search?vin=...`: vehículo registrado y visible del taller, para propietario y mecánico.
 - Contrato y alcance de búsqueda: [docs/busqueda.md](docs/busqueda.md).
-- La creación real de diagnósticos sigue pendiente.
+- La captura OBD se registra con POST /sessions; ver el contrato del incremento V015 al final.
 - Estructura y límites: [docs/arquitectura.md](docs/arquitectura.md).
 - Contrato y pruebas del historial: [docs/historial.md](docs/historial.md).
 
@@ -111,3 +111,40 @@ La API permite por defecto los orígenes http://localhost:8080 y http://127.0.0.
 Configuración y recorridos de Google, registro de talleres e invitaciones: [guía](docs/google_y_equipo.md).
 
 Perfiles de negocio y migración V012: [propietario y mecánico](docs/propietario_y_mecanico.md). La propiedad se guarda explícitamente en PostgreSQL; las invitaciones incorporan sólo mecánicos.
+
+## Mercado Libre y alternativas guardadas
+
+Búsqueda externa, referencias técnicas y guardado por taller implementados en `feat/integracion_api`. Consulta [arquitectura, configuración y límites de acceso](docs/integracion_mercadolibre.md) y la [evidencia de validación](docs/evidencia/integracion_mercadolibre_validacion.json).
+
+## Captura OBD2, vehículos e historial (V015)
+
+El Bluetooth se atiende en el cliente Windows/Chrome; la API recibe observaciones normalizadas, valida el contrato y persiste bajo el contexto autenticado del taller. No abre puertos del PC ni acepta taller, autor, descripción o precios asignados por el cliente.
+
+| Método y ruta | Contrato y acceso |
+|---|---|
+| GET /vehicles | Hasta 200 vehículos visibles; propietario/mecánico. |
+| POST /vehicles | model_id, year, plate, engine. Alta mínima sin titular; no reemplaza un vehículo existente. Misma patente con otros datos: 409. |
+| GET /diagnostic-devices | Inventario activo del taller. |
+| POST /diagnostic-devices | Sólo propietario; name e idempotency_key UUID. Registro lógico de vLinker MC sin MAC ficticia. |
+| POST /sessions | vehicle_id, device_id, kilometraje, idempotency_key UUID, captured_at UTC, protocol, services y observations. |
+| GET /sessions/{id} | Detalle con vehículo, protocolo, estados de servicios y códigos/ECU/categorías; registros previos siguen siendo consultables. |
+
+services contiene exactamente 03, 07 y 0A. Los estados son ok, empty, no_data, unsupported o partial. El modo 03 debe completarse (ok/empty); no_data no equivale a cero fallas. partial se reserva a lecturas opcionales con ECU que no soportan el servicio. observations contiene objetos code, ecu y kind (stored/pending/permanent), sin duplicados, hasta 256. JSON máximo 32 KiB; fecha entre siete días pasados y cinco minutos futuros; kilometraje entero no negativo. El cliente debe conservar la clave y el contenido del guardado para reintentar; otra carga o autor con la misma clave produce 409.
+
+Una sola transacción inserta sesion_diagnostico, observacion_obd y los vínculos catalogados de falla_sesion. Los códigos desconocidos se conservan sin descripción inventada. No se crea cotización ni se cambia a cotizado/reparado. Historial mantiene filtros, cursores y contrato; para capturas nuevas cuenta códigos distintos, sin multiplicarlos por ECU o categoría. Las alternativas externas se vinculan usando el session_id existente y mantienen RLS y restricciones del proveedor.
+
+Arquitectura: rutas delgadas → DTO/servicio de captura → DiagnosticCaptureRepository → transacción autenticada/RLS. V015 pertenece a RE-db. Aplicarla después de V014 con respaldo; no reinicializar la base.
+
+Las pruebas SQL y de persistencia se ejecutaron sobre una copia aislada. La prueba Flutter optativa del recorrido completo usa serial y marketplace controlados, HTTP/BD reales, e incluye reintento concurrente, códigos desconocidos, aislamiento de talleres y asociación de alternativa. Requiere API QA generada con estas rutas, datos demo y variables RUN_OBD_HTTP_TESTS, TEST_API_URL, DB_NAME (prefijo re_api_preflight_) y DEMO_PASSWORD. Nunca apuntarla a datos de usuarios. Los dobles QA y tokens de prueba no pertenecen al código de producción.
+
+[Traza navegable en JSON](docs/evidencia/traza_bluetooth_obd2.json) · [Resultados y aceptación pendiente de hardware](docs/evidencia/bluetooth_validacion.json).
+
+### Actualización VIN automático
+
+GET /vehicles acepta ahora el filtro opcional vin (17 caracteres, sin I/O/Q, normalizado), siempre bajo RLS. POST /vehicles y POST /sessions aceptan vin opcional; los clientes previos sin este campo conservan el contrato. La huella de reintento incluye VIN cuando está presente.
+
+Al crear la captura, se bloquea el vehículo visible con FOR UPDATE y se contrasta el VIN. Si estaba vacío se completa; si es diferente se devuelve 409 vin_vehicle_mismatch. Un VIN ya asociado a otro vehículo del taller devuelve 409 vehicle_vin_conflict. La asociación y las inserciones de sesión/observaciones son atómicas: si falla el dispositivo o cualquier escritura, el VIN tampoco cambia. No se sobrescriben VIN ni se consulta identidad de otros talleres. GET /sessions/{id} muestra el VIN registrado del vehículo mediante la relación existente; no duplica identificadores en observaciones, auditoría ni tablas nuevas, y conserva la anonimización existente.
+
+No se incorpora un decodificador externo de marca/modelo/año. Coincidir por VIN significa encontrar el registro existente en ese taller; un VIN nuevo requiere que el técnico confirme los datos. V016 de RE-db añade sólo la marca Peugeot y el modelo 3008 al catálogo. La prueba HTTP usa un Peugeot 3008 año 2017 de QA y un VIN sintético exclusivamente en una base desechable.
+
+Pruebas específicas: test/obd_vin_test.dart (Flutter), test/diagnostic_flow_test.dart, test/obd_backend_flow_test.dart optativo y test/features/diagnostics/scan_request_test.dart (API). Fuente del formato: [ELM327](https://www.elmelectronics.com/wp-content/uploads/2016/07/ELM327DSH.pdf#page=42).

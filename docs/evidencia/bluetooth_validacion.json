@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-01",
+  "branch": "feat/bluetooth_obd2",
+  "verdict": "software_validated_physical_hardware_pending",
+  "scope": "Windows + Chrome desktop Web Serial + vLinker MC classic Bluetooth SPP",
+  "physicalHardware": {
+    "available": false,
+    "radioTested": false,
+    "vehicleTested": false,
+    "requiredAcceptance": [
+      "Emparejar vLinker MC en Windows y seleccionarlo en Chrome",
+      "Conectar a vehículo real y verificar identificación/protocolo",
+      "Comparar DTC/ECU/categorías con una herramienta de referencia",
+      "Desconectar/reconectar físicamente y comprobar recuperación",
+      "Guardar y recuperar el diagnóstico real en historial"
+    ]
+  },
+  "checks": [
+    {
+      "name": "Flutter suite",
+      "passed": 62,
+      "skipped": 3,
+      "result": "pass",
+      "log": "bt-front-closure.log"
+    },
+    {
+      "name": "Backend suite with database and HTTP enabled",
+      "passed": 68,
+      "skipped": 1,
+      "result": "pass",
+      "log": "bt-back-closure.log"
+    },
+    {
+      "name": "Focused capture persistence test, PostgreSQL",
+      "passed": 1,
+      "result": "pass"
+    },
+    {
+      "name": "Frontend scanner → real HTTP → PostgreSQL → history → saved alternative",
+      "passed": 1,
+      "result": "pass",
+      "serial": "controlled chunks, no radio",
+      "marketplace": "controlled provider; no new real-provider verification",
+      "log": "bt-e2e-delivery.log"
+    },
+    {
+      "name": "SQL regression",
+      "passed": 517,
+      "failed": 0,
+      "files": 12,
+      "result": "pass"
+    },
+    {
+      "name": "Flutter analyze",
+      "result": "pass, no issues"
+    },
+    {
+      "name": "Dart analyze",
+      "result": "pass, no issues"
+    },
+    {
+      "name": "Release web build",
+      "result": "pass",
+      "log": "bt-web-final.log"
+    },
+    {
+      "name": "Git diff --check",
+      "result": "pass in all three repositories"
+    }
+  ],
+  "regressionsCovered": [
+    "Existing auth/catalog/history/offer suites",
+    "Owner/mechanic rights and cross-tenant isolation",
+    "Known and unknown DTC preservation",
+    "Mode 03 CAN DTC-count byte and ISO-TP framing",
+    "Optional unsupported/partial services versus zero faults",
+    "Read-only command allowlist; no mode 04",
+    "Timeout, cancellation and idle disconnect cleanup",
+    "Stable retry key and concurrent save idempotency",
+    "Vehicle registration and registration retry",
+    "No automatic quote or diagnosis-state change"
+  ],
+  "migration": {
+    "file": "RE-db/db/migrations/V015__captura_obd.sql",
+    "liveApplied": true,
+    "backup": "Ignored local pre-V015 backup retained; no volume recreation",
+    "testDatabase": "Disposable clone removed after execution"
+  },
+  "runtime": {
+    "frontend": "http://localhost:8080",
+    "api": "http://localhost:8081",
+    "health": "/health/database",
+    "httpStatus": 200,
+    "database": "connected",
+    "container": "healthy",
+    "restarted": true,
+    "ui": {
+      "browser": "Edge desktop",
+      "result": "Login demo, scanner and vehicle registration dialog rendered; no physical port opened",
+      "screenshot": ".repuestos-exactos/reviews/bluetooth-20261101/pantalla-diagnostico.png"
+    }
+  },
+  "git": {
+    "committed": false,
+    "pushed": false,
+    "repositories": [
+      {
+        "repo": "Repuestos-Exactos",
+        "branch": "feat/bluetooth_obd2",
+        "diffCheck": 0,
+        "changedOrNewFiles": 44,
+        "privateValueMatches": []
+      },
+      {
+        "repo": "Backend_Repuestos_Exactos",
+        "branch": "feat/bluetooth_obd2",
+        "diffCheck": 0,
+        "changedOrNewFiles": 17,
+        "privateValueMatches": []
+      },
+      {
+        "repo": "RE-db",
+        "branch": "feat/bluetooth_obd2",
+        "diffCheck": 0,
+        "changedOrNewFiles": 4,
+        "privateValueMatches": []
+      }
+    ],
+    "snapshotMoment": "Estado anterior al commit y push del incremento; estos indicadores no describen el estado posterior de la rama."
+  },
+  "trace": "traza_bluetooth_obd2.json",
+  "logs": "Local ignored directory .repuestos-exactos/reviews/preflight-20261101 and bluetooth-20261101; not published",
+  "limits": [
+    "Physical adapter unavailable; software validation does not establish vehicle compatibility.",
+    "No Android/iOS native Bluetooth implementation in this increment.",
+    "Generic OBD coverage only; OEM/ABS/airbag not guaranteed.",
+    "Daily home counters remain prototype data."
+  ],
+  "vinUpdate": {
+    "date": "2026-11-01",
+    "status": "software_validated_hardware_pending",
+    "request": "Lectura automática de VIN preservando fallas; vehículo físico previsto Peugeot 3008 año 2017",
+    "protocol": "Modo 09 PID 02 (0902), al terminar los servicios DTC",
+    "vinStorage": "Campo vehiculo.vin existente; sin copiar el VIN a observaciones ni auditoría",
+    "automaticSelection": "Sólo coincidencia exacta con un vehículo visible del taller; un VIN nuevo no determina automáticamente marca/modelo/año",
+    "safety": [
+      "VIN no disponible/incompleto/timeout no elimina DTC ya leídos",
+      "VIN distintos entre ECU no generan una identidad válida",
+      "No se sobrescribe un VIN distinto del vehículo elegido",
+      "Asociación VIN y captura en una transacción; sin escrituras si falla el guardado",
+      "Reintentos mantienen contenido y clave ante fallo de red",
+      "Conflicto confirmado permite corregir selección sin perder la captura"
+    ],
+    "tests": {
+      "frontend": {
+        "passed": 72,
+        "skipped": 3,
+        "log": "vin-front-suite.log"
+      },
+      "backend": {
+        "passed": 69,
+        "skipped": 1,
+        "log": "vin-back-suite.log"
+      },
+      "sql": {
+        "passed": 517,
+        "failed": 0,
+        "files": 12,
+        "note": "10_operacion repetido con clave_backend requerida; ejecución inicial carecía de esa variable"
+      },
+      "e2e": {
+        "passed": 1,
+        "log": "vin-e2e-atomic.log",
+        "serial": "controlado",
+        "http": "real",
+        "postgres": "copia aislada",
+        "marketplace": "controlado",
+        "cases": [
+          "Peugeot 3008 2017 de QA con VIN sintético",
+          "Asociación y búsqueda por VIN",
+          "Reintento concurrente sin duplicar",
+          "Rechazo VIN diferente",
+          "Unicidad por taller",
+          "Aislamiento de taller",
+          "Rollback de VIN al fallar dispositivo",
+          "Historial y alternativa vinculada"
+        ]
+      },
+      "analyzers": "Ambos sin incidencias",
+      "releaseWebBuild": "correcto"
+    },
+    "catalog": {
+      "migration": "V016__catalogo_peugeot_3008.sql",
+      "liveApplied": true,
+      "cloneReapplication": "Sin duplicados, INSERT 0 0",
+      "createsRealVehicle": false,
+      "createsFakeVin": false
+    },
+    "pending": [
+      "Prueba con vLinker MC y Peugeot 3008 2017 físicos",
+      "Confirmación manual de marca/modelo/año si el VIN es nuevo"
+    ],
+    "runtime": {
+      "frontend": "http://localhost:8080",
+      "api": "http://localhost:8081",
+      "health": {
+        "status": "ok",
+        "database": "connected"
+      },
+      "ui": "Inicio de sesión demo y pantalla actualizada revisados en navegador integrado; no se abrió un puerto físico",
+      "screenshot": ".repuestos-exactos/reviews/bluetooth-20261101/pantalla-vin-automatico.png",
+      "qaCloneRemoved": true
+    }
+  },
+  "checksDescribe": "Validación del primer incremento; ver vinUpdate.tests para la actualización posterior de VIN."
+}

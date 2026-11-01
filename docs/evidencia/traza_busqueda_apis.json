@@ -1,0 +1,385 @@
+{
+  "schemaVersion": 1,
+  "reviewDate": "2026-10-31",
+  "timezone": "America/Santiago",
+  "workspace": "C:/__apps/re-app",
+  "method": "Análisis estático del código actual y revisión de documentación oficial; no prueba autenticada de proveedores.",
+  "repositories": {
+    "Repuestos-Exactos": "b6a04024610120fb2a1b54f892b9d43956e462ec",
+    "Backend_Repuestos_Exactos": "f0016213dbdf7c5c28002f0edd43459d57e24c8c",
+    "RE-db": "ba01db12a2981b1d25930d38cc4a6ef384168d01"
+  },
+  "pdf": {
+    "path": "C:/proyecta/miuaf/db/sql/APIs y Afiliados para Repuestos.pdf",
+    "pages": 2,
+    "sha256": "3d661817b0b43702f4fce5137bab7a8c605dd70a15008cf06120a85653ff0b66"
+  },
+  "index": {
+    "stats": {
+      "files": 233,
+      "dartFiles": 121,
+      "parsed": 121,
+      "cached": 0,
+      "routes": 12,
+      "requests": 10,
+      "tables": 21,
+      "symbols": 350,
+      "tests": 61,
+      "diagnostics": 0,
+      "unresolved": 1
+    },
+    "scope": "Búsqueda de repuestos",
+    "snapshot": "2026-10-31T18-51-41-730Z",
+    "backendFolderOverride": "Backend_Repuestos_Exactos",
+    "overridePersisted": false
+  },
+  "nodes": [
+    {
+      "id": "screen",
+      "file": "Repuestos-Exactos/lib/features/search/presentation/views/manual_search_screen.dart",
+      "line": 52,
+      "endLine": 52,
+      "label": "Botón Buscar repuestos",
+      "type": "frontend",
+      "sha256": "0d380f3b6f6387cf66c4c473b68b883acd86e36111131fd46f9b3d58fd4aad7e",
+      "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/search/presentation/views/manual_search_screen.dart"
+    },
+    {
+      "id": "controller",
+      "file": "Repuestos-Exactos/lib/features/search/presentation/controllers/catalog_search_controller.dart",
+      "line": 255,
+      "endLine": 300,
+      "label": "CatalogSearchController.searchParts",
+      "type": "frontend",
+      "sha256": "12aabc0ac98687be481478d1e242396cbde8e862b02999f3dc32146203b6c1f6",
+      "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/search/presentation/controllers/catalog_search_controller.dart"
+    },
+    {
+      "id": "repository",
+      "file": "Repuestos-Exactos/lib/features/search/data/repositories/api_search_repository.dart",
+      "line": 40,
+      "endLine": 48,
+      "label": "ApiSearchRepository.parts",
+      "type": "frontend",
+      "sha256": "334fdcc4083a8ab7c7436c9fbe2c4dc48409c40b2559c74ebfbef457268ffaa8",
+      "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/search/data/repositories/api_search_repository.dart"
+    },
+    {
+      "id": "route",
+      "file": "Backend_Repuestos_Exactos/routes/catalog/dtc/[code]/parts.dart",
+      "line": 8,
+      "endLine": 23,
+      "label": "GET /catalog/dtc/:code/parts",
+      "type": "backend",
+      "sha256": "48cf78e4af862fcb7ede11f28b404a596d80875a24addf0cce329fe9f53d1e83",
+      "absolutePath": "C:/__apps/re-app/Backend_Repuestos_Exactos/routes/catalog/dtc/[code]/parts.dart"
+    },
+    {
+      "id": "service",
+      "file": "Backend_Repuestos_Exactos/lib/features/catalog/services/catalog_service.dart",
+      "line": 34,
+      "endLine": 50,
+      "label": "CatalogService.parts",
+      "type": "backend",
+      "sha256": "75c86a8ae1ed25f8494f8595eb78b11c2512bf7cd103671394e6518b3bcb8b9e",
+      "absolutePath": "C:/__apps/re-app/Backend_Repuestos_Exactos/lib/features/catalog/services/catalog_service.dart"
+    },
+    {
+      "id": "sql",
+      "file": "Backend_Repuestos_Exactos/lib/features/catalog/repositories/catalog_repository.dart",
+      "line": 78,
+      "endLine": 107,
+      "label": "CatalogRepository.parts",
+      "type": "backend",
+      "sha256": "2db76f7bb4470447eb45f7e20a0df4a9619591da38ab6adcdf1e9e96d262feac",
+      "absolutePath": "C:/__apps/re-app/Backend_Repuestos_Exactos/lib/features/catalog/repositories/catalog_repository.dart"
+    },
+    {
+      "id": "catalog-schema",
+      "file": "RE-db/db/migrations/V002__tablas_catalogos.sql",
+      "line": 32,
+      "endLine": 117,
+      "label": "DTC, componentes, repuestos y compatibilidad",
+      "type": "database",
+      "sha256": "9a28a7687c7587db9087ba823f6a1364876ece5070baa56e6ff5fd0c9538eaa1",
+      "absolutePath": "C:/__apps/re-app/RE-db/db/migrations/V002__tablas_catalogos.sql"
+    },
+    {
+      "id": "backend-dto",
+      "file": "Backend_Repuestos_Exactos/lib/features/catalog/dto/catalog_dto.dart",
+      "line": 30,
+      "endLine": 50,
+      "label": "Respuesta del catálogo",
+      "type": "backend",
+      "sha256": "0ed78397a558e1a1ee65fc8f52a9e4b10de7374385f27e4292551ac8b6abe481",
+      "absolutePath": "C:/__apps/re-app/Backend_Repuestos_Exactos/lib/features/catalog/dto/catalog_dto.dart"
+    },
+    {
+      "id": "frontend-dto",
+      "file": "Repuestos-Exactos/lib/features/search/data/models/catalog_dto.dart",
+      "line": 97,
+      "endLine": 135,
+      "label": "Validación de la respuesta",
+      "type": "frontend",
+      "sha256": "7d43789ab0cf046c3de0fee39aceafea88c07227deebc8cbefd04b29bbfff852",
+      "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/search/data/models/catalog_dto.dart"
+    },
+    {
+      "id": "card",
+      "file": "Repuestos-Exactos/lib/features/search/presentation/widgets/part_result_card.dart",
+      "line": 10,
+      "endLine": 68,
+      "label": "Tarjeta de repuesto local",
+      "type": "frontend",
+      "sha256": "c04f75deaa2dd5072a93bfb789691de3b96b01cf7326e7033b31e572f1e355b7",
+      "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/features/search/presentation/widgets/part_result_card.dart"
+    },
+    {
+      "id": "composition",
+      "file": "Repuestos-Exactos/lib/main.dart",
+      "line": 54,
+      "endLine": 79,
+      "label": "Inyección del repositorio real",
+      "type": "frontend",
+      "sha256": "c746c51fb711db551a48779ae9d83ba09b120664efc577d6362a7fad4fc1b012",
+      "absolutePath": "C:/__apps/re-app/Repuestos-Exactos/lib/main.dart"
+    },
+    {
+      "id": "auth",
+      "file": "Backend_Repuestos_Exactos/lib/auth/authentication_middleware.dart",
+      "line": 49,
+      "endLine": 59,
+      "label": "Handler dentro de transacción autenticada",
+      "type": "backend",
+      "sha256": "822724fba34e0dbdd891eab2adb75896f425ef2f9be5c12a885e76ce2fa98e84",
+      "absolutePath": "C:/__apps/re-app/Backend_Repuestos_Exactos/lib/auth/authentication_middleware.dart"
+    },
+    {
+      "id": "transaction",
+      "file": "Backend_Repuestos_Exactos/lib/database/database.dart",
+      "line": 80,
+      "endLine": 117,
+      "label": "Contexto de taller y revalidación",
+      "type": "backend",
+      "sha256": "102a0343214f8c69192265e234db6b8672f20a3bfd71b165f8f400a4b7cfe74b",
+      "absolutePath": "C:/__apps/re-app/Backend_Repuestos_Exactos/lib/database/database.dart"
+    },
+    {
+      "id": "quote-schema",
+      "file": "RE-db/db/migrations/V003__tablas_operativas.sql",
+      "line": 311,
+      "endLine": 380,
+      "label": "Cotización existente y fórmula de margen",
+      "type": "database",
+      "sha256": "d982dca0fbf6a6db13b202a144f57fcda795b111cf98253780f7dc65ddbadc77",
+      "absolutePath": "C:/__apps/re-app/RE-db/db/migrations/V003__tablas_operativas.sql"
+    }
+  ],
+  "edges": [
+    {
+      "from": "screen",
+      "to": "controller",
+      "kind": "callback",
+      "evidence": "screen"
+    },
+    {
+      "from": "controller",
+      "to": "repository",
+      "kind": "repository-call",
+      "evidence": "controller",
+      "resolution": "Interfaz; implementación comprobada en composition"
+    },
+    {
+      "from": "repository",
+      "to": "route",
+      "kind": "http",
+      "evidence": "repository"
+    },
+    {
+      "from": "route",
+      "to": "service",
+      "kind": "service-call",
+      "evidence": "route"
+    },
+    {
+      "from": "service",
+      "to": "sql",
+      "kind": "repository-call",
+      "evidence": "service"
+    },
+    {
+      "from": "sql",
+      "to": "catalog-schema",
+      "kind": "sql",
+      "evidence": "sql"
+    },
+    {
+      "from": "route",
+      "to": "backend-dto",
+      "kind": "serialize",
+      "evidence": "route"
+    },
+    {
+      "from": "backend-dto",
+      "to": "frontend-dto",
+      "kind": "response-contract",
+      "evidence": "frontend-dto"
+    },
+    {
+      "from": "frontend-dto",
+      "to": "card",
+      "kind": "render-contract",
+      "evidence": "card"
+    }
+  ],
+  "limitations": [
+    "No hay prueba de permisos ni resultados de las cuentas de proveedores.",
+    "Los esquemas proceden de migraciones versionadas, no de introspección de PostgreSQL.",
+    "El índice MCP consultado apunta a rutas antiguas; los archivos y líneas se contrastaron en las copias actuales.",
+    "No se ejecutaron pruebas de producto, migraciones, compras ni cambios de implementación."
+  ],
+  "operationalFindings": [
+    {
+      "file": "Iniciar-RepuestosExactos.ps1",
+      "line": 43,
+      "oldFolder": "RE-api",
+      "expectedFolder": "Backend_Repuestos_Exactos"
+    },
+    {
+      "file": "main_app/config/workspace.json",
+      "line": 14,
+      "oldFolder": "RE-api",
+      "expectedFolder": "Backend_Repuestos_Exactos"
+    }
+  ],
+  "currentReview": {
+    "reviewDate": "2026-10-31",
+    "branch": "feat/integracion_api",
+    "historicalFieldsDescribeOriginalReview": true,
+    "repositories": [
+      {
+        "folder": "Repuestos-Exactos",
+        "commit": "adacb5cd8d4e67ba8db6d734ff58a93f987d9117"
+      },
+      {
+        "folder": "Backend_Repuestos_Exactos",
+        "commit": "f826fc1badefc9295d86e561cedb0b9bbeab9dcf"
+      },
+      {
+        "folder": "RE-db",
+        "commit": "4458c9e298016d114b9ddb52586dbb3664baa696"
+      }
+    ],
+    "pdf": {
+      "path": "C:/proyecta/miuaf/db/sql/APIs y Afiliados para Repuestos.pdf",
+      "pages": 2,
+      "sha256": "3d661817b0b43702f4fce5137bab7a8c605dd70a15008cf06120a85653ff0b66",
+      "textExtracted": true,
+      "allPagesRenderedAndInspected": true
+    },
+    "method": {
+      "mcpDiscovery": true,
+      "mcpTraceReturnedNoCallees": true,
+      "graphPointsAtPreviousCheckout": true,
+      "currentSourceFilesVerifiedDirectly": true,
+      "realDatabaseReadOnlyQuery": true,
+      "providerAuthenticatedRequests": false,
+      "applicationOrSchemaChanges": false
+    },
+    "catalogObservation": {
+      "dtc": "P0301",
+      "components": [
+        "Bobina de encendido",
+        "Bujía",
+        "Inyector de combustible"
+      ],
+      "referenceData": "Demostración; referencias sintéticas presentes, no certificadas contra fabricante"
+    },
+    "files": [
+      {
+        "path": "Repuestos-Exactos/lib/features/search/presentation/controllers/catalog_search_controller.dart",
+        "sha256": "12aabc0ac98687be481478d1e242396cbde8e862b02999f3dc32146203b6c1f6"
+      },
+      {
+        "path": "Repuestos-Exactos/lib/features/search/data/repositories/api_search_repository.dart",
+        "sha256": "334fdcc4083a8ab7c7436c9fbe2c4dc48409c40b2559c74ebfbef457268ffaa8"
+      },
+      {
+        "path": "Repuestos-Exactos/lib/features/search/data/models/catalog_dto.dart",
+        "sha256": "7d43789ab0cf046c3de0fee39aceafea88c07227deebc8cbefd04b29bbfff852"
+      },
+      {
+        "path": "Backend_Repuestos_Exactos/lib/auth/authentication_middleware.dart",
+        "sha256": "bdddcdaa96a8976c1c97a2e7f37413f0eecc4362c2d14bccd16b96e67b0e2870"
+      },
+      {
+        "path": "Backend_Repuestos_Exactos/lib/database/database.dart",
+        "sha256": "9b821ee9efb383a4e64d0b96ef0fd521527067a20244bcc3a6524ded0a9a3f30"
+      },
+      {
+        "path": "Backend_Repuestos_Exactos/lib/features/catalog/repositories/catalog_repository.dart",
+        "sha256": "2db76f7bb4470447eb45f7e20a0df4a9619591da38ab6adcdf1e9e96d262feac"
+      },
+      {
+        "path": "RE-db/db/migrations/V002__tablas_catalogos.sql",
+        "sha256": "9a28a7687c7587db9087ba823f6a1364876ece5070baa56e6ff5fd0c9538eaa1"
+      },
+      {
+        "path": "RE-db/db/migrations/V003__tablas_operativas.sql",
+        "sha256": "d982dca0fbf6a6db13b202a144f57fcda795b111cf98253780f7dc65ddbadc77"
+      }
+    ],
+    "resolvedOperationalFindings": [
+      "Launcher y mapa de main_app ya apuntan a Backend_Repuestos_Exactos"
+    ],
+    "findings": [
+      "El listado actual obtiene repuestos locales con margen mediante GET /catalog/dtc/{code}/parts.",
+      "Para ofertas externas hace falta resolver necesidad/vehículo y crear un contrato distinto del de repuesto interno.",
+      "Middleware autenticado envuelve el handler en una transacción; se requiere sacar HTTP externo de ese alcance.",
+      "El guardado de selección externa no existe y cotizacion_detalle referencia repuesto interno."
+    ],
+    "providerDocumentation": [
+      {
+        "provider": "Mercado Libre",
+        "sources": [
+          "https://developers.mercadolibre.cl/buscador-de-productos",
+          "https://developers.mercadolibre.cl/es_ar/api-docs-es/items-y-busquedas"
+        ],
+        "verification": "Extractos oficiales accesibles; apertura completa HTTP403; acceso a ofertas de terceros de nuestra cuenta no probado."
+      },
+      {
+        "provider": "eBay",
+        "sources": [
+          "https://developer.ebay.com/api-docs/buy/static/api-browse.html",
+          "https://developer.ebay.com/api-docs/buy/static/buy-requirements.html",
+          "https://developer.ebay.com/develop/api/buy/api_call_limits"
+        ],
+        "verification": "Documentación oficial de búsqueda, compatibilidad, requisitos y límites consultada; producción y cuenta no probadas."
+      },
+      {
+        "provider": "Amazon",
+        "sources": [
+          "https://affiliate-program.amazon.com/creatorsapi/docs/en-us/introduction",
+          "https://affiliate-program.amazon.com/creatorsapi/docs/en-us/concepts/best-programming-practices"
+        ],
+        "verification": "Requisitos y TTL de Offers consultados; uso comercial propuesto, elegibilidad y acceso de cuenta pendientes."
+      },
+      {
+        "provider": "AliExpress",
+        "sources": [
+          "https://openservice.aliexpress.com",
+          "https://open.alitrip.com/docs/doc.htm?articleId=45803&docType=2&treeId=674"
+        ],
+        "verification": "Portal no accesible y documentación histórica con timeout; no se afirma contrato actual validado."
+      }
+    ],
+    "proposal": {
+      "providerPilot": "Mercado Libre condicionado a acceso y cobertura; eBay como alternativa",
+      "endpoints": [
+        "GET /catalog/dtc/{code}/components",
+        "POST /offers/search"
+      ],
+      "implemented": false
+    }
+  }
+}

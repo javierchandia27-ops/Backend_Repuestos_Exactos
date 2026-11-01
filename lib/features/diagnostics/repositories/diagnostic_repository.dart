@@ -57,7 +57,9 @@ class DiagnosticRepository {
       LEFT JOIN public.marca_vehiculo ma ON ma.id = mo.marca_vehiculo_id
       LEFT JOIN public.cotizacion c ON c.sesion_id = s.id AND c.vigente
       CROSS JOIN LATERAL (
-        SELECT count(*) AS fallas, max(x.severidad)::text AS severidad_maxima
+        SELECT CASE WHEN s.clave_ingreso IS NULL THEN count(*) ELSE
+          (SELECT count(DISTINCT o.codigo) FROM public.observacion_obd o WHERE o.sesion_id=s.id)
+          END AS fallas, max(x.severidad)::text AS severidad_maxima
         FROM public.falla_sesion x WHERE x.sesion_id = s.id
       ) f
       $where

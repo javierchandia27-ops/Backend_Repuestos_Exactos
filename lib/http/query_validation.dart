@@ -48,3 +48,13 @@ String diagnosticCode(String value, {bool prefix = false}) {
   }
   return code;
 }
+
+/// Normaliza un VIN completo sin introducir reglas exclusivas de Norteamérica.
+String vehicleVin(String value) {
+  final vin = value.trim().toUpperCase();
+  if (!RegExp(r'^[A-HJ-NPR-Z0-9]{17}$').hasMatch(vin) ||
+      vin.split('').toSet().length == 1) {
+    throw const ApiError(400, 'invalid_vin');
+  }
+  return vin;
+}

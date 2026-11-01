@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dart_frog/dart_frog.dart';
 import 'package:re_api/auth/login_credentials.dart';
+import 'package:re_api/auth/session_response.dart';
 import 'package:re_api/auth/session_store.dart';
 import 'package:re_api/database/database.dart';
 import 'package:re_api/http/api_error.dart';
@@ -21,15 +22,10 @@ Future<Response> onRequest(RequestContext context) async {
     metadata: context.read<RequestMetadata>(),
   );
   if (identity == null) return apiError(401, 'invalid_credentials');
-  final sessions = context.read<SessionStore>();
-  final issued = sessions.issue(identity);
-  return Response.json(
-    body: {
-      'access_token': issued.token,
-      'token_type': 'Bearer',
-      'expires_in': sessions.lifetime.inSeconds,
-      'expires_at': issued.session.expiresAt.toIso8601String(),
-      ...identity.toPublicJson(),
-    },
+  return sessionResponse(
+    context.read<SessionStore>(),
+    identity,
+    request: context.request,
+    metadata: context.read<RequestMetadata>(),
   );
 }

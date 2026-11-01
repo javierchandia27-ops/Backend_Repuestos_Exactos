@@ -90,6 +90,8 @@ Future<Response> onRequest(RequestContext context) async {
     return sessionResponse(
       context.read<SessionStore>(),
       GoogleAccountRepository.identity(row),
+      request: context.request,
+      metadata: context.read<RequestMetadata>(),
     );
   });
 }

@@ -43,6 +43,7 @@ Middleware corsMiddleware(Set<String> allowedOrigins) => (handler) {
     }
     final headers = <String, Object>{
       'access-control-allow-origin': origin,
+      'access-control-allow-credentials': 'true',
       'vary': 'Origin',
     };
     if (request.method == HttpMethod.options) {
@@ -54,7 +55,11 @@ Middleware corsMiddleware(Set<String> allowedOrigins) => (handler) {
           <String>[];
       if (!{'GET', 'POST'}.contains(method) ||
           requestedHeaders.any(
-            (item) => !{'authorization', 'content-type'}.contains(item),
+            (item) => !{
+              'authorization',
+              'content-type',
+              'x-re-session',
+            }.contains(item),
           )) {
         return apiError(
           403,
@@ -66,7 +71,8 @@ Middleware corsMiddleware(Set<String> allowedOrigins) => (handler) {
         headers: {
           ...headers,
           'access-control-allow-methods': 'GET, POST, OPTIONS',
-          'access-control-allow-headers': 'Authorization, Content-Type',
+          'access-control-allow-headers':
+              'Authorization, Content-Type, X-RE-Session',
           'access-control-max-age': '600',
         },
       );

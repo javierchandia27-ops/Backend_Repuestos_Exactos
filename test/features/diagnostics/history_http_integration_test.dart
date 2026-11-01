@@ -149,7 +149,7 @@ void main() {
             400,
           );
         }
-        expect((await send('POST', '/sessions', token: first)).status, 405);
+        expect((await send('POST', '/sessions', token: first)).status, 415);
         for (final email in [
           'mecanico1@losaromos.example',
           'mecanico2@losaromos.example',
