@@ -53,6 +53,15 @@ Middleware authenticationMiddleware({
         final authenticated = enriched.provide<AuthSession>(() => session);
         if (path == '/auth/logout') {
           response = await handler(authenticated);
+        } else if (path == '/offers/search') {
+          // Ruta autenticada con trabajo HTTP externo: revalidar y liberar la
+          // conexión.
+          await context.read<Database>().withUserTransaction(
+            session.identity,
+            metadata: metadata,
+            action: (_) async {},
+          );
+          response = await handler(authenticated);
         } else {
           response = await context.read<Database>().withUserTransaction(
             session.identity,

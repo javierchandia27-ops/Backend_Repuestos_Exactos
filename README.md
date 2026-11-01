@@ -111,3 +111,7 @@ La API permite por defecto los orígenes http://localhost:8080 y http://127.0.0.
 Configuración y recorridos de Google, registro de talleres e invitaciones: [guía](docs/google_y_equipo.md).
 
 Perfiles de negocio y migración V012: [propietario y mecánico](docs/propietario_y_mecanico.md). La propiedad se guarda explícitamente en PostgreSQL; las invitaciones incorporan sólo mecánicos.
+
+## Mercado Libre y alternativas guardadas
+
+Búsqueda externa, referencias técnicas y guardado por taller implementados en `feat/integracion_api`. Consulta [arquitectura, configuración y límites de acceso](docs/integracion_mercadolibre.md) y la [evidencia de validación](docs/evidencia/integracion_mercadolibre_validacion.json).

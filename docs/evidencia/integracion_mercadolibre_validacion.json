@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-10-31T23:10:10.835Z",
+  "authorization": "success",
+  "liveMarketplaceSearch": {
+    "status": 403
+  },
+  "liveTechnicalCatalog": {
+    "status": 200,
+    "count": 20
+  },
+  "saveStatus": 200,
+  "retryStatus": 200,
+  "sameId": true,
+  "historyStatus": 200,
+  "visibleSaved": true,
+  "isolatedFromOtherWorkshop": true,
+  "savedKind": "catalog_product",
+  "noCommercialSnapshot": true,
+  "tests": {
+    "backend": 62,
+    "frontend": 46,
+    "frontendOptionalSkipped": 2
+  },
+  "databaseTestDataRemoved": true,
+  "commercialListingsValidated": false
+}
