@@ -23,7 +23,7 @@ late final OfferService _offers;
 // Dart Frog ejecuta init una sola vez al iniciar el proceso.
 Future<void> init(InternetAddress ip, int port) async {
   _database = Database(DatabaseConfig.load());
-  _sessions = SessionStore();
+  _sessions = SessionStore(database: _database);
   _google = GoogleTokenVerifier.load();
   _onboarding = OnboardingStore();
   _corsOrigins = loadCorsOrigins();

@@ -31,7 +31,9 @@ class Database {
         AND NULLIF(current_setting('app.usuario_id', true), '') IS NULL
         AND to_regclass('public.vehiculo') IS NOT NULL
         AND to_regclass('public.sesion_diagnostico') IS NOT NULL
-        AND to_regclass('public.cotizacion') IS NOT NULL AS ready
+        AND to_regclass('public.cotizacion') IS NOT NULL
+        AND to_regclass('public.sesion_acceso') IS NOT NULL
+        AND to_regprocedure('public.fn_sesion_acceso(text,jsonb)') IS NOT NULL AS ready
     ''');
     return result.single[0] == true;
   }

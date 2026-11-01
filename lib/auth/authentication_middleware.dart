@@ -38,6 +38,8 @@ Middleware authenticationMiddleware({
         '/',
         '/health/database',
         '/auth/login',
+        '/auth/refresh',
+        '/auth/logout',
         '/auth/google',
         '/auth/google/challenge',
         '/auth/google/config',
@@ -48,7 +50,9 @@ Middleware authenticationMiddleware({
         response = await handler(enriched);
       } else {
         token = bearerToken(context.request);
-        final session = token == null ? null : sessions.resolve(token);
+        final session = token == null
+            ? null
+            : await sessions.find(token, metadata: metadata);
         if (session == null) return apiError(401, 'invalid_session');
         final authenticated = enriched.provide<AuthSession>(() => session);
         if (path == '/auth/logout') {
@@ -80,7 +84,7 @@ Middleware authenticationMiddleware({
     } on _RollbackResponse catch (error) {
       return error.response.copyWith(headers: {'cache-control': 'no-store'});
     } on InvalidSession catch (_) {
-      if (token != null) sessions.revoke(token);
+      if (token != null) await sessions.invalidate(access: token);
       return apiError(401, 'invalid_session');
     } on ApiError catch (error) {
       return apiError(error.statusCode, error.code);

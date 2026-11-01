@@ -68,7 +68,7 @@ Firma RS256 con las claves públicas de Google, caché según Cache-Control, emi
 
 Para altas e invitaciones se requiere Gmail o Google Workspace, donde Google es autoritativo sobre el correo. Una cuenta Google que usa un correo externo puede vincularse a una cuenta existente confirmando su contraseña. Dar de alta correos externos sin contraseña requiere añadir verificación propia de correo.
 
-Las sesiones y los desafíos permanecen en memoria, como las sesiones actuales: reiniciar la API obliga a ingresar nuevamente. Para varias instancias se necesita un almacén compartido. La integración Google de esta entrega es web; en las aplicaciones nativas se conserva el ingreso por contraseña y se indica continuar con Google desde la web.
+Desde V017 las sesiones completas se guardan en PostgreSQL y se renuevan por cookie HttpOnly. Los desafíos y tickets temporales de Google siguen en memoria: un reinicio durante un ingreso todavía no completado obliga a reintentarlo; no elimina las sesiones ya emitidas. La integración Google de esta entrega es web; en las aplicaciones nativas se conserva el ingreso por contraseña y se indica continuar con Google desde la web.
 
 El modelo actual permite un taller y un perfil por usuario, con email único. Una invitación no transfiere una cuenta de otro taller. Si se requiere trabajar en varias empresas, habrá que agregar membresías y selección de taller.
 

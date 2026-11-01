@@ -28,7 +28,7 @@ Después de cambiar `.env`, dependencias o el arranque personalizado, detener co
 ## Rutas disponibles
 
 - `GET /`: confirma que la API responde, independientemente del estado de PostgreSQL.
-- `GET /health/database`: ejecuta una consulta real y comprueba que la sesión usa `app_backend_user` y que existen `vehiculo`, `sesion_diagnostico` y `cotizacion` en `public`. No lee registros ni lista tablas por HTTP. No valida todas las migraciones, permisos ni columnas.
+- `GET /health/database`: ejecuta una consulta real y comprueba que la sesión usa `app_backend_user` y que existen `vehiculo`, `sesion_diagnostico` y `cotizacion`, `sesion_acceso` y la función `fn_sesion_acceso` en `public`. No lee registros ni lista tablas por HTTP. No valida todas las migraciones, permisos ni columnas.
 
 Conexión correcta: HTTP 200 en `http://localhost:8081/health/database`:
 
@@ -85,7 +85,7 @@ La prueba real verifica metadatos, el rechazo de lectura operativa sin asumir ro
 | /auth/logout | POST | Token Bearer |
 | /settings | GET | Token Bearer; solo su taller |
 
-El token es opaco, dura una hora y su identidad se guarda en el servidor. Se revalidan usuario, taller activo, rol técnico y perfil de negocio en cada petición protegida. Reiniciar la API cierra todas las sesiones. Las rutas nuevas quedan protegidas por defecto; son públicas /, /health/database, /auth/login y los endpoints explícitos /auth/google, /auth/google/config, /auth/google/challenge y /auth/google/complete. Estos últimos validan la credencial o el ticket temporal antes de conceder acceso.
+El token es opaco, dura una hora y su identidad se guarda en el servidor. Se revalidan usuario, taller activo, rol técnico y perfil de negocio en cada petición protegida. Desde V017, reiniciar la API conserva las sesiones en PostgreSQL; el navegador puede renovarlas mediante cookie HttpOnly. Las rutas nuevas quedan protegidas por defecto; son públicas /, /health/database, /auth/login, /auth/refresh y /auth/logout (estos dos últimos validan su propia credencial y protección CSRF), además de los endpoints explícitos /auth/google, /auth/google/config, /auth/google/challenge y /auth/google/complete. Estos últimos validan la credencial o el ticket temporal antes de conceder acceso.
 
 Guía y ejemplos: [docs/autenticacion.md](docs/autenticacion.md).
 

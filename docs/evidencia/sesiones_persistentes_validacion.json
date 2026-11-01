@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-01",
+  "branch": "feat/sesiones_persistentes",
+  "status": "implemented_validated",
+  "design": {
+    "access": "Token opaco de 256 bits; una hora; sólo en memoria del frontend",
+    "refresh": "Cookie HttpOnly host-only Path=/auth SameSite=Strict; Secure salvo HTTP loopback",
+    "familyLifetime": "Siete días absolutos, sin extensión ilimitada",
+    "store": "PostgreSQL: hashes SHA-256, ninguna credencial en claro",
+    "rotation": "Nuevos acceso y refresh en cada renovación; historial de hashes consumidos",
+    "concurrency": "Un refresh por cliente; 409 sin nuevas credenciales durante diez segundos para uso simultáneo; repetición posterior revoca familia",
+    "logout": "Revoca acceso y renovación, borra cookie; espera rotación en vuelo. Sin red se conserva sólo intención de salida en el navegador.",
+    "google": "Misma sesión propia para contraseña y Google; no cierra la sesión Google ni garantiza omitir su selector cuando corresponde reautenticar.",
+    "capacity": "10.000 familias activas compartidas entre instancias; al alcanzar el límite rechaza nuevas sesiones sin expulsar las existentes"
+  },
+  "contracts": {
+    "POST /auth/refresh": "Cookie y X-RE-Session: 1; sin Bearer requerido",
+    "POST /auth/logout": "Idempotente; Bearer o cookie; cookie exige header; sin credenciales no opera contra DB",
+    "Existing protected routes": "Bearer y permisos/RLS existentes conservados"
+  },
+  "validation": {
+    "frontend": {
+      "passed": 82,
+      "skipped": 3
+    },
+    "backend": {
+      "passed": 73,
+      "skipped": 1,
+      "database": "copia aislada",
+      "http": "real"
+    },
+    "sql": {
+      "passed": 529,
+      "failed": 0,
+      "files": 13,
+      "expectedErrorsMatched": true
+    },
+    "analyzers": "Sin incidencias",
+    "releaseWebBuild": "Correcto",
+    "actualApiRestart": {
+      "existingAccessStatus": 200,
+      "refreshStatus": 200
+    },
+    "cases": [
+      "Restauración previa a login",
+      "Falla de red recuperable sin invalidación",
+      "Logout durante renovación no resucita sesión",
+      "Respuesta 401 tardía no ejecuta con otra cuenta",
+      "Renovación compartida ante 401 concurrentes",
+      "Rotación y rechazo de acceso anterior",
+      "CSRF y CORS con cookie",
+      "Revocación con acceso inválido",
+      "Repetición y vencimiento absoluto",
+      "Baja de usuario y permisos privados",
+      "Limpieza de familias e historial",
+      "Límite compartido sin expulsión de sesiones activas"
+    ],
+    "browser": {
+      "engine": "Navegador integrado",
+      "login": "Cuenta demo local",
+      "reload": "Misma identidad y taller recuperados sin pasar por login",
+      "logout": "Regresa a login y permanece cerrado después de recargar",
+      "screenshot": ".repuestos-exactos/reviews/bluetooth-20261101/sesion-restaurada.png"
+    },
+    "obdRegression": {
+      "passed": 1,
+      "serial": "controlado",
+      "marketplace": "controlado",
+      "api": "HTTP real",
+      "database": "copia aislada"
+    },
+    "finalRecheck": {
+      "backendUnitPassed": 61,
+      "backendUnitSkipped": 13,
+      "persistentDatabaseRotationPassed": 1,
+      "sqlSessionCasesPassed": 12,
+      "diffCheck": "Correcto en los tres repositorios",
+      "privateValueScan": "Sin coincidencias en 39 archivos cambiados",
+      "disposableDatabaseRemoved": true
+    }
+  },
+  "migration": {
+    "file": "RE-db/db/migrations/V017__sesiones_persistentes.sql",
+    "liveApplied": true,
+    "backup": "Respaldo anterior a V017 conservado fuera de Git",
+    "noVolumeReset": true
+  },
+  "limits": [
+    "La instalación requiere volver a ingresar una vez para crear la cookie nueva.",
+    "Persistencia automática del cliente implementada en web; sin almacén seguro persistente nativo en este incremento.",
+    "Desafíos/tickets Google todavía en memoria: reinicio durante autenticación no completada exige reintento.",
+    "Interrumpir una rotación antes de recibir la cookie puede requerir reautenticación.",
+    "Logout sin conexión no confirma revocación en el servidor; se evita restauración automática local.",
+    "Producción requiere HTTPS, mismo sitio y orígenes exactos."
+  ],
+  "git": {
+    "capturedAt": "Antes del commit y push del incremento",
+    "committed": false,
+    "pushed": false
+  },
+  "runtime": {
+    "frontend": "http://localhost:8080",
+    "api": "http://localhost:8081",
+    "restarted": true,
+    "health": {
+      "status": "ok",
+      "database": "connected"
+    }
+  }
+}
