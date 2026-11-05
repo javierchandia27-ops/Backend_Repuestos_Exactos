@@ -9,11 +9,19 @@ class Offer {
     required this.url,
     required this.queriedAt,
     this.kind = 'listing',
+    this.provider = 'mercadolibre',
+    this.environment = 'production',
     this.catalogStatus,
   });
 
   /// Identificador externo del proveedor, sin convertirlo en repuesto interno.
   final String id;
+
+  /// Procedencia y entorno fijados por el adaptador del servidor.
+  final String provider;
+
+  /// sandbox o production, fijado por el servidor.
+  final String environment;
 
   /// Nombre devuelto por el proveedor; no se archiva en el historial.
   final String title;
@@ -38,7 +46,8 @@ class Offer {
 
   /// Respuesta pública sin credenciales ni información interna.
   Map<String, Object?> toJson() => {
-    'provider': 'mercadolibre',
+    'provider': provider,
+    'environment': environment,
     'kind': kind,
     'catalog_status': catalogStatus,
     'external_id': id,

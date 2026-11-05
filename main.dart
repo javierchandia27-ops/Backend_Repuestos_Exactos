@@ -4,9 +4,12 @@ import 'package:dart_frog/dart_frog.dart';
 import 'package:http/http.dart' as http;
 import 'package:re_api/auth/session_store.dart';
 import 'package:re_api/config/database_config.dart';
+import 'package:re_api/config/ebay_config.dart';
 import 'package:re_api/config/mercadolibre_config.dart';
 import 'package:re_api/database/database.dart';
+import 'package:re_api/features/offers/providers/ebay_provider.dart';
 import 'package:re_api/features/offers/providers/mercadolibre_provider.dart';
+import 'package:re_api/features/offers/services/ebay_tokens.dart';
 import 'package:re_api/features/offers/services/mercadolibre_tokens.dart';
 import 'package:re_api/features/offers/services/offer_service.dart';
 import 'package:re_api/features/onboarding/services/google_token_verifier.dart';
@@ -33,6 +36,9 @@ Future<void> init(InternetAddress ip, int port) async {
       MercadoLibreTokens(MercadoLibreConfig.load(), client),
       client,
     ),
+    additionalProviders: [
+      EbayProvider(EbayTokens(EbayConfig.load(), client), client),
+    ],
   );
 }
 

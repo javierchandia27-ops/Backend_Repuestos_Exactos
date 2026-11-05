@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:re_api/http/api_error.dart';
 
-/// Sólo lo usan URLs fijas de la API oficial, nunca enlaces recibidos del
+/// Sólo lo usan URLs fijas de las APIs oficiales, nunca enlaces recibidos del
 /// usuario.
-Future<http.Response> mercadoLibreRequest(
+Future<http.Response> providerRequest(
   http.Client client,
   String method,
   Uri uri, {
@@ -16,7 +16,8 @@ Future<http.Response> mercadoLibreRequest(
   final abort = Completer<void>();
   final timer = Timer(const Duration(seconds: 6), abort.complete);
   try {
-    final req = http.AbortableRequest(method, uri, abortTrigger: abort.future);
+    final req = http.AbortableRequest(method, uri, abortTrigger: abort.future)
+      ..followRedirects = false;
     if (headers != null) req.headers.addAll(headers);
     if (fields != null) req.bodyFields = fields;
     final res = await client.send(req);

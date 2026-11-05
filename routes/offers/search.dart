@@ -18,6 +18,10 @@ Future<Response> onRequest(RequestContext context) async {
     action: (tx) => OfferPlanRepository(tx).plan(input),
   );
   // La transacción ya terminó. El proveedor no ocupa conexiones PostgreSQL.
-  final result = await context.read<OfferService>().search(identity, plan);
+  final result = await context.read<OfferService>().search(
+    identity,
+    plan,
+    providerId: input.provider,
+  );
   return Response.json(body: result);
 }

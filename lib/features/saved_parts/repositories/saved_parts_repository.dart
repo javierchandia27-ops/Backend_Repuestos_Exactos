@@ -12,7 +12,7 @@ class SavedPartsRepository {
   /// Transacción autenticada del taller, sin conexiones adicionales.
   final TxSession tx;
   static const _select = '''
-SELECT g.id_publico,g.proveedor,g.id_externo,g.tipo_referencia,g.enlace,g.nota,g.creado_en,
+SELECT g.id_publico,g.proveedor,g.entorno_proveedor,g.id_externo,g.tipo_referencia,g.enlace,g.nota,g.creado_en,
     d.codigo,c.nombre AS componente,u.nombre AS autor,ma.nombre AS marca,mo.nombre AS modelo,g.anio,
     s.id_publico AS sesion_id,v.id_publico AS vehiculo_id
     FROM public.repuesto_guardado g
@@ -28,6 +28,7 @@ SELECT g.id_publico,g.proveedor,g.id_externo,g.tipo_referencia,g.enlace,g.nota,g
     return {
       'id': v['id_publico'],
       'provider': v['proveedor'],
+      'environment': v['entorno_proveedor'],
       'external_id': v['id_externo'],
       'url': v['enlace'],
       'kind': v['tipo_referencia'],
@@ -86,8 +87,8 @@ SELECT g.id_publico,g.proveedor,g.id_externo,g.tipo_referencia,g.enlace,g.nota,g
       result = await tx.execute(
         Sql.named('''
       INSERT INTO public.repuesto_guardado(taller_id,usuario_id,dtc_id,componente_id,modelo_vehiculo_id,anio,
-        vehiculo_id,sesion_id,proveedor,id_externo,tipo_referencia,enlace,nota,clave_idempotencia,hash_solicitud)
-      SELECT @workshop,@user,d.id,c.id,mo.id,@year,v.id,s.id,'mercadolibre',@external,@kind,@url,@note,@key::uuid,@hash
+        vehiculo_id,sesion_id,proveedor,entorno_proveedor,id_externo,tipo_referencia,enlace,nota,clave_idempotencia,hash_solicitud)
+      SELECT @workshop,@user,d.id,c.id,mo.id,@year,v.id,s.id,@provider,@environment,@external,@kind,@url,@note,@key::uuid,@hash
       FROM public.dtc_catalogo d
       JOIN public.dtc_componente dc ON dc.dtc_id=d.id
       JOIN public.componente_repuesto c ON c.id=dc.componente_id
@@ -104,6 +105,8 @@ SELECT g.id_publico,g.proveedor,g.id_externo,g.tipo_referencia,g.enlace,g.nota,g
           'workshop': identity.workshopId,
           'user': identity.userId,
           'year': plan.year,
+          'provider': receipt.offer.provider,
+          'environment': receipt.offer.environment,
           'external': receipt.offer.id,
           'kind': receipt.offer.kind,
           'url': receipt.offer.url,

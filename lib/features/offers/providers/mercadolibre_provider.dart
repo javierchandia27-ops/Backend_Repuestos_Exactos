@@ -1,14 +1,23 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:re_api/features/offers/models/offer.dart';
-import 'package:re_api/features/offers/providers/mercadolibre_http.dart';
+import 'package:re_api/features/offers/models/offer_search_plan.dart';
+import 'package:re_api/features/offers/providers/offer_provider.dart';
+import 'package:re_api/features/offers/providers/provider_http.dart';
 import 'package:re_api/features/offers/services/mercadolibre_tokens.dart';
 import 'package:re_api/http/api_error.dart';
 
 /// Adaptador de la API oficial; distingue catálogo técnico y publicaciones.
-class MercadoLibreProvider {
+class MercadoLibreProvider implements OfferProvider {
   /// Adaptador de la API oficial; distingue catálogo técnico y publicaciones.
   MercadoLibreProvider(this.tokens, this.client);
+  @override
+  String get id => 'mercadolibre';
+  @override
+  String get environment => 'production';
+  @override
+  String queryFor(OfferSearchPlan plan) => plan.query;
 
   /// Gestor privado de acceso y renovación OAuth.
   final MercadoLibreTokens tokens;
@@ -18,10 +27,11 @@ class MercadoLibreProvider {
   bool _catalogOnly = false;
 
   /// Consulta resultados externos y conserva su origen y límites.
+  @override
   Future<List<Offer>> search(String query) async {
     final token = await tokens.accessToken();
     if (_catalogOnly) return _catalog(query, token);
-    final res = await mercadoLibreRequest(
+    final res = await providerRequest(
       client,
       'GET',
       Uri.https('api.mercadolibre.com', '/sites/MLC/search', {
@@ -86,7 +96,7 @@ class MercadoLibreProvider {
   }
 
   Future<List<Offer>> _catalog(String query, String token) async {
-    final res = await mercadoLibreRequest(
+    final res = await providerRequest(
       client,
       'GET',
       Uri.https('api.mercadolibre.com', '/products/search', {

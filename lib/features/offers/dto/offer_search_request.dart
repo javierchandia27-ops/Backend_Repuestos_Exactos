@@ -13,10 +13,14 @@ class OfferSearchRequest {
     this.year,
     this.vehicleId,
     this.sessionId,
+    this.provider = 'mercadolibre',
   });
 
   /// Código DTC normalizado del catálogo local.
   final String code;
+
+  /// Fuente externa; el entorno y las credenciales solo los fija el servidor.
+  final String provider;
 
   /// UUID público del componente candidato asociado a la falla.
   final String componentId;
@@ -42,6 +46,7 @@ class OfferSearchRequest {
       'year',
       'vehicle_id',
       'session_id',
+      'provider',
     });
     if (body['dtc'] is! String || body['component_id'] is! String) {
       throw const ApiError(400, 'invalid_offer_search');
@@ -53,6 +58,10 @@ class OfferSearchRequest {
       return publicUuid(v);
     }
 
+    final source = body['provider'] ?? 'mercadolibre';
+    if (source is! String || !{'mercadolibre', 'ebay'}.contains(source)) {
+      throw const ApiError(400, 'invalid_offer_provider');
+    }
     final model = uuid('model');
     final year = body['year'];
     if (year != null &&
@@ -60,6 +69,7 @@ class OfferSearchRequest {
       throw const ApiError(400, 'invalid_offer_search');
     }
     return OfferSearchRequest(
+      provider: source,
       code: diagnosticCode(body['dtc'] as String),
       componentId: publicUuid(body['component_id'] as String),
       modelId: model,

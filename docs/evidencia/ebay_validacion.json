@@ -1,0 +1,142 @@
+{
+  "date": "2026-11-03",
+  "branch": "feat/api_ebay",
+  "status": "implemented_and_validated_with_preexisting_sql_failure",
+  "credentials": {
+    "saved_first": true,
+    "file": ".env",
+    "git_ignored": true,
+    "secrets_in_source": false,
+    "secrets_in_compiled_frontend": false
+  },
+  "checks": {
+    "backend": {
+      "passed": 86,
+      "failed": 0,
+      "analyzer": "no_issues",
+      "final_analyzer": "no_issues",
+      "final_analyzer_log": "backend-final-analysis.log"
+    },
+    "frontend": {
+      "passed": 90,
+      "skipped": 3,
+      "failed": 0,
+      "analyzer": "no_issues",
+      "web_release_build": "passed_final_version",
+      "final_tests_log": "frontend-final-tests.log",
+      "web_release_build_log": "frontend-final-build.log"
+    },
+    "ebay_adapter_after_unicode_fix": {
+      "passed": 10,
+      "failed": 0,
+      "log": "ebay-final-unicode.log"
+    },
+    "sql": {
+      "files": 14,
+      "passed": 546,
+      "failed": 1,
+      "expected_errors": 216,
+      "actual_errors": 216,
+      "new_ebay_checks": {
+        "passed": 18,
+        "failed": 0
+      },
+      "preexisting_failure": {
+        "test": "06_autenticacion.sql",
+        "assertion": "Auditoria: ningun registro contiene un email (ni el intentado ni el del usuario)",
+        "aggregate": {
+          "table": "invitacion_taller",
+          "operation": "INSERT",
+          "rows": 1
+        },
+        "confirmed_in_original_and_clone": true,
+        "changed_or_deleted_audit_data": false
+      }
+    },
+    "actual_ebay": {
+      "oauth_status": 200,
+      "expires_in": 7200,
+      "implemented_cli": {
+        "status": "ok",
+        "environment": "sandbox",
+        "marketplace": "EBAY_US",
+        "items": 20,
+        "currencies": [
+          "USD"
+        ]
+      },
+      "http_flow": {
+        "passed": 1,
+        "checks": [
+          "search",
+          "save",
+          "idempotent_retry",
+          "list_saved",
+          "tenant_isolation",
+          "receipt_tamper_rejection",
+          "unchanged_diagnostic_history"
+        ],
+        "database": "isolated_clone"
+      }
+    },
+    "obd_regression": {
+      "passed": 1,
+      "transport": "controlled_serial",
+      "http": "real",
+      "database": "isolated_clone",
+      "physical_adapter": "not_tested"
+    },
+    "services": {
+      "frontend_status": 200,
+      "api_database_status": 200,
+      "postgres": "healthy",
+      "frontend_url": "http://localhost:8080",
+      "api_url": "http://localhost:8081"
+    }
+  },
+  "migration": {
+    "name": "V018__referencias_ebay.sql",
+    "applied_locally": true,
+    "backup": ".repuestos-exactos/backups/antes-v018-20261103.dump",
+    "existing_docker_volume_preserved": true
+  },
+  "limits": [
+    "Sandbox muestra datos de prueba, no ofertas comerciales de produccion.",
+    "Primer incremento EBAY_US; no confirma envio a Chile ni compatibilidad del repuesto.",
+    "Production requiere otras claves y validacion especifica."
+  ],
+  "git": {
+    "repos": [
+      "Repuestos-Exactos",
+      "Backend_Repuestos_Exactos",
+      "RE-db"
+    ],
+    "committed": false,
+    "pushed": false
+  },
+  "visual": {
+    "status": "passed",
+    "url": "http://localhost:8080/#/search",
+    "steps": [
+      "login_demo",
+      "DTC_P0301",
+      "provider_ebay",
+      "component_spark_plug",
+      "real_sandbox_search"
+    ],
+    "observed": {
+      "title": "DENSO 4504 spark plug Platinum TT Twin Tip",
+      "price": "5.00",
+      "currency": "USD",
+      "sandbox_notice": true,
+      "save_action_present": true
+    },
+    "screenshot": ".repuestos-exactos/reviews/ebay-20261103/ebay-sandbox-ui.png",
+    "live_database_reference_saved": false
+  },
+  "qa_cleanup": {
+    "api_stopped": true,
+    "clone_removed": true,
+    "backup_retained": true
+  }
+}

@@ -148,3 +148,17 @@ Al crear la captura, se bloquea el vehículo visible con FOR UPDATE y se contras
 No se incorpora un decodificador externo de marca/modelo/año. Coincidir por VIN significa encontrar el registro existente en ese taller; un VIN nuevo requiere que el técnico confirme los datos. V016 de RE-db añade sólo la marca Peugeot y el modelo 3008 al catálogo. La prueba HTTP usa un Peugeot 3008 año 2017 de QA y un VIN sintético exclusivamente en una base desechable.
 
 Pruebas específicas: test/obd_vin_test.dart (Flutter), test/diagnostic_flow_test.dart, test/obd_backend_flow_test.dart optativo y test/features/diagnostics/scan_request_test.dart (API). Fuente del formato: [ELM327](https://www.elmelectronics.com/wp-content/uploads/2016/07/ELM327DSH.pdf#page=42).
+
+## Integración eBay Browse
+
+En `feat/api_ebay`, `POST /offers/search` admite `provider: "ebay"`; si se omite conserva Mercado Libre. Configurar `EBAY_ENVIRONMENT`, `EBAY_CLIENT_ID`, `EBAY_CLIENT_SECRET` y `EBAY_MARKETPLACE_ID=EBAY_US` en `.env`. El secreto y el token permanecen en el backend. Client Credentials emite acceso de aplicación: se reutiliza hasta su vencimiento y se solicita otro sin autorización de usuario, callback ni archivo de tokens.
+
+Prueba de lectura: `dart run bin/ebay_check.dart "spark plug"`. Imprime únicamente estado, entorno, cantidad y monedas; no muestra credenciales. Sandbox debe usar sus propias claves y `api.sandbox.ebay.com`. Production usa otras claves y su acceso debe validarse por separado.
+
+Aplicar V018 con respaldo: desde RE-db, `bash db/scripts/migrate.sh V018`. Amplía referencias guardadas por proveedor y entorno, conservando RLS, autor, idempotencia y registros existentes. No ejecutar migraciones anteriores de nuevo. El estado de la API comprueba la columna nueva. Los resultados conservan precio/moneda originales y compatibilidad pendiente de revisión; guardar conserva la referencia, no títulos ni precios.
+
+El primer incremento consulta EBAY_US, con traducciones explícitas de los diez componentes actuales. Modelo y año refinan palabras; no prueban compatibilidad, envío a Chile, impuestos ni disponibilidad. La interfaz y el historial identifican claramente Sandbox.
+
+Pruebas aisladas: `test/support/offers_qa_server.dart` requiere `DB_NAME` con prefijo `re_api_preflight_`; usa fuentes controladas por defecto. `TEST_EBAY_LIVE=true` cambia sólo eBay a su API real. No usar este servidor para operar el taller.
+
+Contrato y trazabilidad: `docs/evidencia/traza_ebay.json`. Verificación: `docs/evidencia/ebay_validacion.json`.

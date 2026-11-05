@@ -32,6 +32,7 @@ class Database {
         AND to_regclass('public.vehiculo') IS NOT NULL
         AND to_regclass('public.sesion_diagnostico') IS NOT NULL
         AND to_regclass('public.cotizacion') IS NOT NULL
+        AND EXISTS (SELECT 1 FROM pg_catalog.pg_attribute WHERE attrelid=to_regclass('public.repuesto_guardado') AND attname='entorno_proveedor' AND NOT attisdropped)
         AND to_regclass('public.sesion_acceso') IS NOT NULL
         AND to_regprocedure('public.fn_sesion_acceso(text,jsonb)') IS NOT NULL AS ready
     ''');

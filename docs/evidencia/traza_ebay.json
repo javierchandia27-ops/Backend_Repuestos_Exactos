@@ -1,0 +1,92 @@
+{
+  "increment": "eBay Browse",
+  "branch": "feat/api_ebay",
+  "date": "2026-11-03",
+  "scope": {
+    "provider": "ebay",
+    "environment": "sandbox",
+    "marketplace": "EBAY_US",
+    "purchase": false,
+    "compatibility": "unverified",
+    "production": "not_live_validated",
+    "shipping_to_chile": "not_confirmed"
+  },
+  "flow": [
+    {
+      "step": 1,
+      "layer": "frontend",
+      "files": [
+        "lib/features/offers/presentation/widgets/marketplace_search_panel.dart",
+        "lib/features/offers/presentation/controllers/offers_controller.dart"
+      ],
+      "behavior": "Selecciona DTC, componente y proveedor; invalida resultados al cambiar contexto."
+    },
+    {
+      "step": 2,
+      "layer": "http",
+      "files": [
+        "routes/offers/search.dart",
+        "lib/features/offers/dto/offer_search_request.dart"
+      ],
+      "behavior": "POST /offers/search conserva Mercado Libre por defecto; acepta ebay. El entorno se fija en el servidor."
+    },
+    {
+      "step": 3,
+      "layer": "business",
+      "files": [
+        "lib/features/offers/services/offer_service.dart",
+        "lib/features/offers/providers/offer_provider.dart"
+      ],
+      "behavior": "Valida plan contra PostgreSQL y permisos del taller; termina la transaccion antes de consultar APIs. Emite recibo ligado a usuario/taller para guardar."
+    },
+    {
+      "step": 4,
+      "layer": "provider",
+      "files": [
+        "lib/features/offers/services/ebay_tokens.dart",
+        "lib/features/offers/providers/ebay_provider.dart",
+        "lib/features/offers/providers/provider_http.dart"
+      ],
+      "behavior": "OAuth Client Credentials, cache y renovacion; Browse API en host oficial; traduccion de diez componentes, consulta limitada a cien caracteres Unicode y veinte resultados. Valida IDs, entorno, enlaces, precio y moneda. Limites de seis segundos y un MiB, sin redirecciones."
+    },
+    {
+      "step": 5,
+      "layer": "persistence",
+      "files": [
+        "lib/features/saved_parts/repositories/saved_parts_repository.dart",
+        "RE-db/db/migrations/V018__referencias_ebay.sql"
+      ],
+      "behavior": "Guardar usa datos verificados del recibo. Persiste referencia, proveedor, entorno, autor y contexto; no copia titulo/precio/stock. Mantiene RLS, idempotencia, auditoria y vinculo opcional al diagnostico."
+    },
+    {
+      "step": 6,
+      "layer": "frontend_history",
+      "files": [
+        "lib/features/offers/presentation/views/saved_parts_screen.dart"
+      ],
+      "behavior": "Ver alternativas guardadas muestra proveedor y Sandbox. Precios solo en consulta, moneda original, sin conversion ni compatibilidad garantizada."
+    }
+  ],
+  "compatibility": {
+    "legacy_mercadolibre": "production por defecto; flujo y referencias anteriores preservados",
+    "diagnostics": "sin cambio de contrato",
+    "sessions": "sin cambio de contrato",
+    "quotes": "no se crea cotizacion ni compra automaticamente"
+  },
+  "configuration": {
+    "private_file": "Backend_Repuestos_Exactos/.env",
+    "variables": [
+      "EBAY_CLIENT_ID",
+      "EBAY_CLIENT_SECRET",
+      "EBAY_ENVIRONMENT",
+      "EBAY_MARKETPLACE_ID"
+    ],
+    "frontend_credentials": false,
+    "callback_or_tunnel_required": false
+  },
+  "sources": [
+    "https://developer.ebay.com/develop/guides/sell/authorization",
+    "https://developer.ebay.com/develop/api/spec/browse_api.json",
+    "https://developer.ebay.com/api-docs/static/oauth-credentials.html"
+  ]
+}

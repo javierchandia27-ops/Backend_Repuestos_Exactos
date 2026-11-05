@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:re_api/config/mercadolibre_config.dart';
-import 'package:re_api/features/offers/providers/mercadolibre_http.dart';
+import 'package:re_api/features/offers/providers/provider_http.dart';
 import 'package:re_api/http/api_error.dart';
 
 /// Un solo proceso escribe este archivo privado; la renovación se serializa.
@@ -61,7 +61,7 @@ class MercadoLibreTokens {
     if (refresh is! String || refresh.isEmpty) {
       throw const ApiError(503, 'mercadolibre_authorization_required');
     }
-    final response = await mercadoLibreRequest(
+    final response = await providerRequest(
       client,
       'POST',
       Uri.https('api.mercadolibre.com', '/oauth/token'),

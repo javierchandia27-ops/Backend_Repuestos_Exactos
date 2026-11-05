@@ -46,6 +46,38 @@ void main() {
       throwsA(isA<ApiError>()),
     );
   });
+  test(
+    'proveedor opcional conserva Mercado Libre '
+    'y valida eBay sin aceptar entorno',
+    () async {
+      final base = <String, Object?>{
+        'dtc': 'P0301',
+        'component_id': '11111111-1111-4111-8111-111111111111',
+      };
+      expect(
+        (await OfferSearchRequest.read(request(base))).provider,
+        'mercadolibre',
+      );
+      expect(
+        (await OfferSearchRequest.read(
+          request({...base, 'provider': 'ebay'}),
+        )).provider,
+        'ebay',
+      );
+      for (final bad in [42, 'other', '']) {
+        await expectLater(
+          OfferSearchRequest.read(request({...base, 'provider': bad})),
+          throwsA(isA<ApiError>()),
+        );
+      }
+      await expectLater(
+        OfferSearchRequest.read(
+          request({...base, 'provider': 'ebay', 'environment': 'production'}),
+        ),
+        throwsA(isA<ApiError>()),
+      );
+    },
+  );
   test('rechaza cuerpos demasiado grandes', () async {
     await expectLater(
       SavePartRequest.read(request({'note': 'x' * 9000})),

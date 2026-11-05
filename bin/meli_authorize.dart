@@ -6,7 +6,7 @@ import 'package:crypto/crypto.dart';
 import 'package:dotenv/dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:re_api/config/mercadolibre_config.dart';
-import 'package:re_api/features/offers/providers/mercadolibre_http.dart';
+import 'package:re_api/features/offers/providers/provider_http.dart';
 import 'package:re_api/features/offers/services/mercadolibre_tokens.dart';
 import 'package:re_api/http/api_error.dart';
 
@@ -143,7 +143,7 @@ Future<void> main(List<String> args) async {
           continue;
         }
         try {
-          final res = await mercadoLibreRequest(
+          final res = await providerRequest(
             client,
             'POST',
             Uri.https('api.mercadolibre.com', '/oauth/token'),
